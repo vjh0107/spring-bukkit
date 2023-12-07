@@ -42,10 +42,18 @@ class PaperTabCompleter(
             val rootLabel = inputQualifier
                 .split(".")
                 .first()
-            val mapping = commandMappingRegistry.findAllByRoot(rootLabel)
+            var mapping = commandMappingRegistry.findAllByRoot(rootLabel)
                 .singleOrNull { mapping ->
                     inputQualifier.startsWith(mapping.qualifier)
-                } ?: return
+                }
+            if (mapping == null) {
+                val mayRoot = commandMappingRegistry.find(rootLabel)
+                if (mayRoot != null) {
+                    mapping = mayRoot
+                } else {
+                    return
+                }
+            }
             val index = inputQualifier
                 .removePrefix(mapping.qualifier)
                 .removePrefix(".")
@@ -55,8 +63,7 @@ class PaperTabCompleter(
                 .mappingMethod
                 .let {
                     CommandAopUtils.extractCommandParameters(it)
-                }.getOrNull(index - 1)
-                ?.type ?: return
+                }.getOrNull(index - 1)?.type ?: return
 
             val converter = commandArgumentConversionService.findCommandArgumentConverter(TypeDescriptor.valueOf(parameterType))
             val completions = if (converter != null) {
@@ -86,7 +93,11 @@ class PaperTabCompleter(
                 emptyList()
             }
             completions
+        }.filter { completion ->
+            val lastArgument = inputQualifier.split(".").last()
+            completion.startsWith(lastArgument)
         }
+
         val wrappedCompletions = completions.map { completion ->
             AsyncTabCompleteEvent.Completion.completion(completion)
         }
