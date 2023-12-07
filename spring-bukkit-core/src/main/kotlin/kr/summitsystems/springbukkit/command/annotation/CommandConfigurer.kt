@@ -12,5 +12,5 @@ interface CommandConfigurer {
 
     fun getCoroutineScope(): CoroutineScope? { return null }
 
-    fun getCommandUsageSource(): CommandFeedbackSource? { return null }
+    fun getCommandFeedbackSource(): CommandFeedbackSource? { return null }
 }

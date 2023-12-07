@@ -79,7 +79,7 @@ class CommandConfiguration {
         commandConfigurers: ObjectProvider<CommandConfigurer>,
         messageSource: MessageSource
     ): CommandFeedbackSource {
-        return commandConfigurers.singleOrNull()?.getCommandUsageSource() ?: DefaultCommandFeedbackSource(messageSource)
+        return commandConfigurers.singleOrNull()?.getCommandFeedbackSource() ?: DefaultCommandFeedbackSource(messageSource)
     }
 
     @Bean
