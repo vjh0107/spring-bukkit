@@ -9,10 +9,10 @@ dependencies {
     compileOnly(libs.spigot)
     compileOnly(libs.paper)
 
-    implementation(libs.kotlin.reflect)
-    implementation(libs.kotlinx.coroutines.core)
-    implementation(libs.spring.boot.autoconfigure)
-    implementation(libs.spring.aspects)
+    api(libs.kotlin.reflect)
+    api(libs.kotlinx.coroutines.core)
+    api(libs.spring.boot.autoconfigure)
+    api(libs.spring.aspects)
 
     testImplementation(libs.spigot)
     testImplementation(libs.spring.test)
