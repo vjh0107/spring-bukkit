@@ -7,8 +7,10 @@ import org.springframework.boot.WebApplicationType
 import org.springframework.boot.builder.SpringApplicationBuilder
 import org.springframework.context.ApplicationContextInitializer
 import org.springframework.context.ConfigurableApplicationContext
+import org.springframework.core.annotation.AnnotationUtils
 import org.springframework.core.env.PropertiesPropertySource
 import org.springframework.core.env.PropertySource
+import java.lang.IllegalStateException
 import java.util.*
 
 abstract class SpringBukkitPlugin : JavaPlugin(), ApplicationContextInitializer<ConfigurableApplicationContext> {
@@ -16,6 +18,9 @@ abstract class SpringBukkitPlugin : JavaPlugin(), ApplicationContextInitializer<
 
     final override fun onEnable() {
         loadDefaultConfig()
+        if (AnnotationUtils.getAnnotation(getApplicationClass(), SpringBukkitApplication::class.java) == null) {
+            throw IllegalStateException("Unable to initialize the unannotated application with @SpringBukkitApplication.")
+        }
         applicationContext = runApplication(getApplicationClass())
     }
 
