@@ -1,9 +1,6 @@
 package kr.summitsystems.springbukkit.listener.support
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.CoroutineStart
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import kr.summitsystems.springbukkit.listener.BukkitListenerRegistrar
 import kr.summitsystems.springbukkit.listener.HandleOrder
 import org.apache.commons.lang3.ClassUtils
@@ -60,22 +57,18 @@ class ServerBukkitListenerRegistrar(
     ) : EventExecutor {
         override fun execute(empty: Listener, event: Event) {
             if (eventClass.isInstance(event)) {
-                 coroutineScope.launch(Dispatchers.Unconfined, CoroutineStart.UNDISPATCHED) {
-                    invokeHandlerMethod(event)
+                try {
+                    if (KotlinDetector.isSuspendingFunction(method)) {
+                        runBlocking(coroutineScope.coroutineContext) {
+                            method.kotlinFunction!!.callSuspend(instance, event)
+                        }
+                    } else {
+                        method.invoke(instance, event)
+                    }
+                } catch (exception: InvocationTargetException) {
+                    val cause = exception.cause ?: exception
+                    throw cause
                 }
-            }
-        }
-
-        private suspend fun invokeHandlerMethod(event: Event) {
-            try {
-                if (KotlinDetector.isSuspendingFunction(method)) {
-                    method.kotlinFunction!!.callSuspend(instance, event)
-                } else {
-                    method.invoke(instance, event)
-                }
-            } catch (exception: InvocationTargetException) {
-                val cause = exception.cause ?: exception
-                throw cause
             }
         }
     }
