@@ -40,8 +40,6 @@ dependencyResolutionManagement {
             library("spring-aspects", "org.springframework:spring-aspects:${extra["spring.version"]}")
 
             library("spring-data-jpa", "org.springframework.data:spring-data-jpa:${extra["spring.data.jpa.version"]}")
-            library("spring-jdbc", "org.springframework:spring-jdbc:${extra["spring.version"]}")
-            library("spring-orm", "org.springframework:spring-orm:${extra["spring.version"]}")
             library("hibernate-core", "org.hibernate.orm:hibernate-core:${extra["hibernate.version"]}")
             library("hikaricp", "com.zaxxer:HikariCP:${extra["hikaricp.version"]}")
 

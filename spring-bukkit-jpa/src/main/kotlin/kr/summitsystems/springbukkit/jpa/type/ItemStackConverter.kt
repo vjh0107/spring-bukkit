@@ -12,7 +12,7 @@ import java.util.zip.DeflaterOutputStream
 import java.util.zip.InflaterOutputStream
 import javax.sql.rowset.serial.SerialBlob
 
-@Converter(autoApply = true)
+@Converter
 class ItemStackConverter : AttributeConverter<ItemStack, Blob> {
     override fun convertToDatabaseColumn(attribute: ItemStack?): Blob? {
         if (attribute == null) {

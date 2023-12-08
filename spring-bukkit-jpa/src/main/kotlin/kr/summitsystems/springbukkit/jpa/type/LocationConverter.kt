@@ -5,7 +5,7 @@ import jakarta.persistence.Converter
 import org.bukkit.Bukkit
 import org.bukkit.Location
 
-@Converter(autoApply = true)
+@Converter
 class LocationConverter : AttributeConverter<Location, String> {
     override fun convertToDatabaseColumn(attribute: Location?): String? {
         if (attribute == null) {
