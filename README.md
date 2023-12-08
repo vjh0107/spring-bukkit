@@ -9,6 +9,7 @@ Leverage the full capabilities of the Spring Framework within your Bukkit plugin
 - `Listener support` Bukkit Listeners will be auto registered with @BukkitListener.
 - `Coroutines support` Adapting kotlinx.coroutines to be compatible with Bukkit's MainThread.
 - `Configurations` The configurations for adapting Spring Framework in Bukkit plugins.
+- `JPA Support`: Provide Bukkit dedicated JPA converters.
   
 ## Using in your projects
 ```kotlin
