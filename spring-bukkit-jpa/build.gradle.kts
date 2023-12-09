@@ -9,6 +9,8 @@ dependencies {
     api(libs.spring.boot.autoconfigure)
     api(libs.spring.data.jpa)
     api(libs.hibernate.core)
+    api(libs.jakarta.persistence.api)
+    api(libs.jakarta.transaction.api)
     implementation(libs.hikaricp)
 
     testImplementation(libs.spigot)
