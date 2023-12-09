@@ -38,13 +38,10 @@ dependencyResolutionManagement {
 
             library("spring-boot-autoconfigure", "org.springframework.boot:spring-boot-autoconfigure:${extra["spring.boot.version"]}")
             library("spring-aspects", "org.springframework:spring-aspects:${extra["spring.version"]}")
-            library("spring-context", "org.springframework:spring-context:${extra["spring.version"]}")
 
             library("spring-data-jpa", "org.springframework.data:spring-data-jpa:${extra["spring.data.jpa.version"]}")
             library("hibernate-core", "org.hibernate.orm:hibernate-core:${extra["hibernate.version"]}")
             library("hikaricp", "com.zaxxer:HikariCP:${extra["hikaricp.version"]}")
-            library("jakarta-persistence-api", "jakarta.persistence:jakarta.persistence-api:${extra["jakarta.persistence.api.version"]}")
-            library("jakarta-transaction-api", "jakarta.transaction:jakarta.transaction-api:${extra["jakarta.transaction.api.version"]}")
 
             library("spring-test", "org.springframework.boot:spring-boot-starter-test:${extra["spring.boot.version"]}")
         }

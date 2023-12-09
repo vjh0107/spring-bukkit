@@ -11,7 +11,6 @@ dependencies {
     api(libs.kotlinx.coroutines.core)
     api(libs.spring.boot.autoconfigure)
     api(libs.spring.aspects)
-    api(libs.spring.context)
 
     testImplementation(libs.spigot)
     testImplementation(libs.spring.test)
