@@ -7,26 +7,23 @@ import org.bukkit.util.io.BukkitObjectInputStream
 import org.bukkit.util.io.BukkitObjectOutputStream
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
-import java.sql.Blob
 import java.util.zip.DeflaterOutputStream
 import java.util.zip.InflaterOutputStream
-import javax.sql.rowset.serial.SerialBlob
 
 @Converter
-class ItemStackConverter : AttributeConverter<ItemStack, Blob> {
-    override fun convertToDatabaseColumn(attribute: ItemStack?): Blob? {
+class ItemStackConverter : AttributeConverter<ItemStack, ByteArray> {
+    override fun convertToDatabaseColumn(attribute: ItemStack?): ByteArray? {
         if (attribute == null) {
             return null
         }
-        return SerialBlob(serializeItemStack(attribute))
+        return serializeItemStack(attribute)
     }
 
-    override fun convertToEntityAttribute(dbData: Blob?): ItemStack? {
+    override fun convertToEntityAttribute(dbData: ByteArray?): ItemStack? {
         if (dbData == null) {
             return null
         }
-        val byteArray = dbData.getBytes(1, dbData.length().toInt())
-        return deserializeItemStack(byteArray)
+        return deserializeItemStack(dbData)
     }
 
     private fun serializeItemStack(itemStack: ItemStack): ByteArray {
