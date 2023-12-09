@@ -38,7 +38,6 @@ dependencyResolutionManagement {
 
             library("spring-boot-autoconfigure", "org.springframework.boot:spring-boot-autoconfigure:${extra["spring.boot.version"]}")
             library("spring-aspects", "org.springframework:spring-aspects:${extra["spring.version"]}")
-            library("spring-context", "org.springframework:spring-context:${extra["spring.version"]}")
 
             library("spring-data-jpa", "org.springframework.data:spring-data-jpa:${extra["spring.data.jpa.version"]}")
             library("hibernate-core", "org.hibernate.orm:hibernate-core:${extra["hibernate.version"]}")
