@@ -78,7 +78,8 @@ internal open class CommandExecutorImpl(
                 return
             }
             commandContextHolder.setContext(context)
-            val convertedParameter = convertCommandArgument(argumentValue, parameter.type.jvmErasure.javaObjectType, context)
+            val convertedParameter =
+                convertCommandArgument(argumentValue, parameter.type.jvmErasure.javaObjectType, context)
             if (convertedParameter == null) {
                 sender.sendMessage(commandFeedbackSource.getUsageMessage(targetMapping, sender.getLocale()))
                 return
@@ -143,15 +144,13 @@ internal open class CommandExecutorImpl(
         convertedParameters: Array<Any?>
     ) {
         if (KotlinDetector.isSuspendingFunction(mapping.mappingMethod)) {
-            runBlocking {
-                commandCoroutineScope.launch {
-                    commandContextHolder.setContext(context)
-                    mapping.mappingMethod.kotlinFunction!!.callSuspend(
-                        mapping.controllerInstance,
-                        context,
-                        *convertedParameters
-                    )
-                }.join()
+            commandCoroutineScope.launch {
+                commandContextHolder.setContext(context)
+                mapping.mappingMethod.kotlinFunction!!.callSuspend(
+                    mapping.controllerInstance,
+                    context,
+                    *convertedParameters
+                )
             }
         } else {
             commandContextHolder.setContext(context)
