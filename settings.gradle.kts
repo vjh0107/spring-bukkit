@@ -3,6 +3,7 @@ rootProject.name = "spring-bukkit"
 includeBuild("build-logic")
 include("spring-bukkit-core")
 include("spring-bukkit-jpa")
+include("spring-bukkit-coroutines")
 
 pluginManagement {
     plugins {

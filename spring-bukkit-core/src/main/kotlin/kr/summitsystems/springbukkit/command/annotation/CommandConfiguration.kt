@@ -1,6 +1,5 @@
 package kr.summitsystems.springbukkit.command.annotation
 
-import kotlinx.coroutines.CoroutineScope
 import kr.summitsystems.springbukkit.command.*
 import kr.summitsystems.springbukkit.command.convert.CommandArgumentConversionService
 import kr.summitsystems.springbukkit.command.support.BukkitCommandConfiguration
@@ -11,6 +10,7 @@ import org.springframework.beans.factory.ObjectProvider
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.config.BeanDefinition
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.ApplicationContext
 import org.springframework.context.MessageSource
 import org.springframework.context.annotation.*
@@ -40,17 +40,16 @@ class CommandConfiguration {
         return PaperTabCompleter(commandMappingRegistry, commandArgumentConversionService)
     }
 
+    @ConditionalOnMissingBean(CommandExecutor::class)
     @Bean
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
     fun commandExecutor(
-        commandCoroutineScope: CoroutineScope,
         commandMappingRegistry: CommandMappingRegistry,
         commandFeedbackSource: CommandFeedbackSource,
         commandContextHolder: CommandContextHolder,
         commandArgumentConversionService: CommandArgumentConversionService
     ): CommandExecutor {
-        return CommandExecutorImpl(
-            commandCoroutineScope,
+        return GenericCommandExecutor(
             commandMappingRegistry,
             commandFeedbackSource,
             commandContextHolder,
@@ -80,15 +79,6 @@ class CommandConfiguration {
         messageSource: MessageSource
     ): CommandFeedbackSource {
         return commandConfigurers.singleOrNull()?.getCommandFeedbackSource() ?: DefaultCommandFeedbackSource(messageSource)
-    }
-
-    @Bean
-    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    fun commandCoroutineScope(
-        pluginCoroutineScope: CoroutineScope,
-        commandConfigurers: ObjectProvider<CommandConfigurer>
-    ): CoroutineScope {
-        return commandConfigurers.singleOrNull()?.getCoroutineScope() ?: pluginCoroutineScope
     }
 
     @Bean

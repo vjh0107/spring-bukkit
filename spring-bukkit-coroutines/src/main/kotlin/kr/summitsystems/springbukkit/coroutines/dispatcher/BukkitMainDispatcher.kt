@@ -1,14 +1,13 @@
-package kr.summitsystems.springbukkit.coroutine.dispatcher
+package kr.summitsystems.springbukkit.coroutines.dispatcher
 
 import kotlinx.coroutines.*
-import kr.summitsystems.springbukkit.coroutine.PluginCoroutineContextElement
+import kr.summitsystems.springbukkit.coroutines.PluginCoroutineContextElement
 import org.bukkit.Bukkit
 import org.bukkit.Server
 import org.bukkit.plugin.IllegalPluginAccessException
 import org.bukkit.plugin.Plugin
 import org.bukkit.scheduler.BukkitRunnable
 import org.bukkit.scheduler.BukkitScheduler
-import java.lang.IllegalStateException
 import kotlin.coroutines.CoroutineContext
 
 @OptIn(InternalCoroutinesApi::class, ExperimentalCoroutinesApi::class)

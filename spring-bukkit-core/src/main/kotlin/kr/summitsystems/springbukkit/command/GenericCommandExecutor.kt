@@ -1,32 +1,23 @@
 package kr.summitsystems.springbukkit.command
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kr.summitsystems.springbukkit.command.annotation.CommandAuthorize
 import kr.summitsystems.springbukkit.util.extension.getLocale
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
-import org.springframework.beans.factory.config.BeanDefinition
-import org.springframework.context.annotation.Role
-import org.springframework.core.KotlinDetector
 import org.springframework.core.annotation.AnnotationUtils
 import org.springframework.core.convert.ConversionService
 import org.springframework.core.convert.ConverterNotFoundException
 import org.springframework.core.convert.TypeDescriptor
 import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Method
-import kotlin.reflect.full.callSuspend
 import kotlin.reflect.jvm.jvmErasure
 import kotlin.reflect.jvm.kotlinFunction
 
-@Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-internal open class CommandExecutorImpl(
-    private val commandCoroutineScope: CoroutineScope,
-    private val commandMappingRegistry: CommandMappingRegistry,
-    private val commandFeedbackSource: CommandFeedbackSource,
-    private val commandContextHolder: CommandContextHolder,
-    private val commandArgumentConversionService: ConversionService
+open class GenericCommandExecutor(
+    protected val commandMappingRegistry: CommandMappingRegistry,
+    protected val commandFeedbackSource: CommandFeedbackSource,
+    protected val commandContextHolder: CommandContextHolder,
+    protected val commandArgumentConversionService: ConversionService
 ) : CommandExecutor {
     override fun executeCommand(sender: CommandSender, commandName: String, args: Array<String>) {
         val inputQualifier = "${commandName}.${args.joinToString(".")}"
@@ -138,23 +129,12 @@ internal open class CommandExecutorImpl(
         throw CommandException.Unexpected()
     }
 
-    private fun invokeMapping(
+    protected open fun invokeMapping(
         mapping: RegistrableCommandMapping,
         context: CommandContext,
         convertedParameters: Array<Any?>
     ) {
-        if (KotlinDetector.isSuspendingFunction(mapping.mappingMethod)) {
-            commandCoroutineScope.launch {
-                commandContextHolder.setContext(context)
-                mapping.mappingMethod.kotlinFunction!!.callSuspend(
-                    mapping.controllerInstance,
-                    context,
-                    *convertedParameters
-                )
-            }
-        } else {
-            commandContextHolder.setContext(context)
-            mapping.mappingMethod.invoke(mapping.controllerInstance, context, *convertedParameters)
-        }
+        commandContextHolder.setContext(context)
+        mapping.mappingMethod.invoke(mapping.controllerInstance, context, *convertedParameters)
     }
 }

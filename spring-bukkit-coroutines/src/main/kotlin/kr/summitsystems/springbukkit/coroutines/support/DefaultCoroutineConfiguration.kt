@@ -1,12 +1,13 @@
-package kr.summitsystems.springbukkit.support.config
+package kr.summitsystems.springbukkit.coroutines.support
 
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kr.summitsystems.springbukkit.coroutine.PluginCoroutineContextElement
+import kr.summitsystems.springbukkit.coroutines.PluginCoroutineContextElement
 import org.bukkit.plugin.Plugin
 import org.springframework.beans.factory.config.BeanDefinition
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -18,6 +19,7 @@ import kotlin.coroutines.CoroutineContext
 @Configuration
 class DefaultCoroutineConfiguration {
 
+    @ConditionalOnBean(Plugin::class)
     @ConditionalOnMissingBean(name = ["coroutineScope", "pluginCoroutineScope"])
     @Primary
     @Bean

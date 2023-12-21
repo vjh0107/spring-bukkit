@@ -1,4 +1,4 @@
-package kr.summitsystems.springbukkit.coroutine
+package kr.summitsystems.springbukkit.coroutines
 
 import org.bukkit.plugin.Plugin
 import kotlin.coroutines.AbstractCoroutineContextElement
