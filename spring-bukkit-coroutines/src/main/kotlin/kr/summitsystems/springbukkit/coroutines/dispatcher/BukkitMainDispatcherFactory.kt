@@ -1,4 +1,4 @@
-package kr.summitsystems.springbukkit.coroutine.dispatcher
+package kr.summitsystems.springbukkit.coroutines.dispatcher
 
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.MainCoroutineDispatcher
