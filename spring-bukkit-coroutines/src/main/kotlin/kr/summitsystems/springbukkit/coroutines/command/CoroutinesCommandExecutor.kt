@@ -8,7 +8,7 @@ import org.springframework.core.convert.ConversionService
 import kotlin.reflect.full.callSuspend
 import kotlin.reflect.jvm.kotlinFunction
 
-class CoroutinesCommandExecutor(
+open class CoroutinesCommandExecutor(
     private val coroutineScope: CoroutineScope,
     commandMappingRegistry: CommandMappingRegistry,
     commandFeedbackSource: CommandFeedbackSource,
