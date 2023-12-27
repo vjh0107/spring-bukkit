@@ -5,10 +5,9 @@ plugins {
 
 dependencies {
     compileOnly(libs.spigot)
+    compileOnly(libs.paper)
 
-    runtimeOnly(project(":spring-bukkit-coroutines"))
-    runtimeOnly(project(":spring-bukkit-support"))
-
+    api(project(":spring-bukkit-core"))
     api(libs.kotlin.reflect)
     api(libs.spring.boot.autoconfigure)
     api(libs.spring.aspects)

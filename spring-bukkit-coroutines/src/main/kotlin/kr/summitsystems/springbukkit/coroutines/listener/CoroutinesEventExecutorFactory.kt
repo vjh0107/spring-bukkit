@@ -1,7 +1,7 @@
 package kr.summitsystems.springbukkit.coroutines.listener
 
 import kotlinx.coroutines.CoroutineScope
-import kr.summitsystems.springbukkit.listener.EventExecutorFactory
+import kr.summitsystems.springbukkit.core.listener.EventExecutorFactory
 import org.bukkit.plugin.EventExecutor
 import java.lang.reflect.Method
 

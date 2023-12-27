@@ -2,7 +2,7 @@ package kr.summitsystems.springbukkit.coroutines.command
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import kr.summitsystems.springbukkit.command.*
+import kr.summitsystems.springbukkit.core.command.*
 import org.springframework.core.KotlinDetector
 import org.springframework.core.convert.ConversionService
 import kotlin.reflect.full.callSuspend
