@@ -8,13 +8,8 @@ import kr.summitsystems.springbukkit.core.support.config.DefaultMessageSourceCon
 import org.springframework.context.annotation.*
 
 @ComponentScans(
-    ComponentScan(
-        basePackages = ["kr.summitsystems.springbukkit"],
-        includeFilters = [ComponentScan.Filter(
-            type = FilterType.ANNOTATION,
-            classes = [SpringBukkitAutoConfiguration::class]
-        )]
-    )
+    ComponentScan(basePackages = ["kr.summitsystems.springbukkit.coroutines"]),
+    ComponentScan(basePackages = ["kr.summitsystems.springbukkit.support"])
 )
 @Import(
     BukkitConfiguration::class,
