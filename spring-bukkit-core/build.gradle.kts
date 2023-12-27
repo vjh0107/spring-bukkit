@@ -6,7 +6,6 @@ plugins {
 dependencies {
     compileOnly(libs.spigot)
 
-    runtimeOnly(project(":spring-bukkit-coroutines"))
     runtimeOnly(project(":spring-bukkit-support"))
 
     api(libs.kotlin.reflect)
