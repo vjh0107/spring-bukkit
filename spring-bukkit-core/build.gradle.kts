@@ -7,6 +7,8 @@ dependencies {
     compileOnly(libs.spigot)
     compileOnly(libs.paper)
 
+    runtimeOnly(project(":spring-bukkit-coroutines"))
+
     api(libs.kotlin.reflect)
     api(libs.spring.boot.autoconfigure)
     api(libs.spring.aspects)

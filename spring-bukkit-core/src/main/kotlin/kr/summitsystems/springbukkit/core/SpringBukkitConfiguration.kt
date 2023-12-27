@@ -5,9 +5,17 @@ import kr.summitsystems.springbukkit.core.command.annotation.CommandConfiguratio
 import kr.summitsystems.springbukkit.core.listener.annotation.BukkitListenerConfiguration
 import kr.summitsystems.springbukkit.core.support.config.BukkitConfiguration
 import kr.summitsystems.springbukkit.core.support.config.DefaultMessageSourceConfiguration
-import org.springframework.context.annotation.Configuration
-import org.springframework.context.annotation.Import
+import org.springframework.context.annotation.*
 
+@ComponentScans(
+    ComponentScan(
+        basePackages = ["kr.summitsystems.springbukkit"],
+        includeFilters = [ComponentScan.Filter(
+            type = FilterType.ANNOTATION,
+            classes = [SpringBukkitAutoConfiguration::class]
+        )]
+    )
+)
 @Import(
     BukkitConfiguration::class,
     CheckerConfiguration::class,
