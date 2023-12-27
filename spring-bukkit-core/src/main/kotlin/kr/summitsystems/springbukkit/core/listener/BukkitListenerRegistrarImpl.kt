@@ -1,6 +1,5 @@
 package kr.summitsystems.springbukkit.core.listener
 
-import org.apache.commons.lang3.ClassUtils
 import org.bukkit.event.Event
 import org.bukkit.event.EventPriority
 import org.bukkit.event.HandlerList
@@ -23,7 +22,7 @@ class BukkitListenerRegistrarImpl(
         handleOrder: HandleOrder,
         ignoreCancelled: Boolean
     ) {
-        if (!ClassUtils.isAssignable(eventClass, Event::class.java)) {
+        if (eventClass.isAssignableFrom(Event::class.java)) {
             throw IllegalStateException("first parameter of event handler must be event. (method: ${method.name}, parameter1: ${eventClass.simpleName})")
         }
         val executor = eventExecutorFactory.create(eventClass, instance, method)

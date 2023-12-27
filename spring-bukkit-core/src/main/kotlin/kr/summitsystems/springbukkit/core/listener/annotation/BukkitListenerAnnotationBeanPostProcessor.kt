@@ -1,7 +1,7 @@
 package kr.summitsystems.springbukkit.core.listener.annotation
 
 import kr.summitsystems.springbukkit.core.listener.BukkitListenerRegistrar
-import org.slf4j.LoggerFactory
+import org.apache.commons.logging.LogFactory
 import org.springframework.aop.framework.AopInfrastructureBean
 import org.springframework.aop.framework.AopProxyUtils
 import org.springframework.beans.factory.config.BeanPostProcessor
@@ -13,7 +13,7 @@ import org.springframework.core.annotation.AnnotationUtils
 class BukkitListenerAnnotationBeanPostProcessor(
     private val applicationContext: ApplicationContext
 ) : BeanPostProcessor {
-    private val logger = LoggerFactory.getLogger(javaClass)
+    private val logger = LogFactory.getLog(javaClass)
 
     private fun getBukkitListenerRegistrar(): BukkitListenerRegistrar {
         return applicationContext.getBean(BukkitListenerRegistrar::class.java)
@@ -36,7 +36,7 @@ class BukkitListenerAnnotationBeanPostProcessor(
 
                     val annotation = AnnotationUtils.getAnnotation(listenerMethod, BukkitListener::class.java) ?: throw IllegalStateException("Annotation @Listener not found.")
                     getBukkitListenerRegistrar().registerListener(event, bean, listenerMethod, annotation.handleOrder, annotation.ignoreCancelled)
-                    logger.trace("listener named {} registered.", listenerMethod)
+                    logger.trace("listener named ${listenerMethod.name} registered.")
                 }
             }
         }
