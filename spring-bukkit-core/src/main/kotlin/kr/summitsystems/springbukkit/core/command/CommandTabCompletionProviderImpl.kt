@@ -1,27 +1,18 @@
-package kr.summitsystems.springbukkit.core.command.support
+package kr.summitsystems.springbukkit.core.command
 
-import com.destroystokyo.paper.event.server.AsyncTabCompleteEvent
-import kr.summitsystems.springbukkit.core.command.CommandMappingRegistry
-import kr.summitsystems.springbukkit.core.command.CommandAopUtils
 import kr.summitsystems.springbukkit.core.command.convert.CommandArgumentConversionService
 import kr.summitsystems.springbukkit.core.command.convert.CommandArgumentConverterAdapter
-import kr.summitsystems.springbukkit.core.listener.annotation.BukkitListener
 import org.springframework.aop.framework.AopProxyUtils
 import org.springframework.core.annotation.OrderUtils
 import org.springframework.core.convert.TypeDescriptor
 import kotlin.reflect.full.allSuperclasses
 
-class PaperTabCompleter(
+class CommandTabCompletionProviderImpl(
     private val commandMappingRegistry: CommandMappingRegistry,
     private val commandArgumentConversionService: CommandArgumentConversionService
-) {
-    @BukkitListener
-    fun onTabComplete(event: AsyncTabCompleteEvent) {
-        if (!event.isCommand || event.buffer.indexOf(' ') == -1) {
-            return
-        }
-
-        val inputQualifier = event.buffer
+)  : CommandTabCompletionProvider {
+    override fun provideTabComplete(inputBuffer: String): List<String> {
+        val inputQualifier = inputBuffer
             .removePrefix("/")
             .replace(" ", ".")
         val mappingPackage = inputQualifier
@@ -51,7 +42,7 @@ class PaperTabCompleter(
                 if (mayRoot != null) {
                     mapping = mayRoot
                 } else {
-                    return
+                    return emptyList()
                 }
             }
             val index = inputQualifier
@@ -63,7 +54,7 @@ class PaperTabCompleter(
                 .mappingMethod
                 .let {
                     CommandAopUtils.extractCommandParameters(it)
-                }.getOrNull(index - 1)?.type ?: return
+                }.getOrNull(index - 1)?.type ?: return emptyList()
 
             val converter = commandArgumentConversionService.findCommandArgumentConverter(TypeDescriptor.valueOf(parameterType))
             val completions = if (converter != null) {
@@ -75,7 +66,8 @@ class PaperTabCompleter(
                     val result: MutableList<CommandArgumentConverterAdapter<*>> = mutableListOf()
                     parameterType.kotlin.allSuperclasses.forEach {
                         val clazz = it.javaObjectType
-                        val adapterDeepSearched = commandArgumentConversionService.findCommandArgumentConverterAdapter(TypeDescriptor.valueOf(clazz))
+                        val adapterDeepSearched = commandArgumentConversionService.findCommandArgumentConverterAdapter(
+                            TypeDescriptor.valueOf(clazz))
                         if (adapterDeepSearched != null) {
                             result.add(adapterDeepSearched)
                         }
@@ -84,7 +76,7 @@ class PaperTabCompleter(
                     if (candidateConverterAdapter != null) {
                         invokeAdapterProvideCompletes(candidateConverterAdapter, parameterType)
                     } else {
-                        return
+                        return emptyList()
                     }
                 } else {
                     invokeAdapterProvideCompletes(adapter, parameterType)
@@ -98,12 +90,7 @@ class PaperTabCompleter(
             completion.startsWith(lastArgument)
         }
 
-        val wrappedCompletions = completions.map { completion ->
-            AsyncTabCompleteEvent.Completion.completion(completion)
-        }
-
-        event.completions(wrappedCompletions)
-        event.isHandled = true
+        return completions
     }
 
     private fun invokeAdapterProvideCompletes(adapterInstance: Any, parameterType: Class<*>): Collection<String> {

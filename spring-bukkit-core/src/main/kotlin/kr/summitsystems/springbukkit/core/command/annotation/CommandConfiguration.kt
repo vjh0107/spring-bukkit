@@ -5,12 +5,10 @@ import kr.summitsystems.springbukkit.core.command.CommandExceptionHandlerRegistr
 import kr.summitsystems.springbukkit.core.command.convert.CommandArgumentConversionService
 import kr.summitsystems.springbukkit.core.command.support.BukkitCommandConfiguration
 import kr.summitsystems.springbukkit.core.command.support.DefaultCommandFeedbackSource
-import kr.summitsystems.springbukkit.core.command.support.PaperTabCompleter
 import org.bukkit.Server
 import org.springframework.beans.factory.ObjectProvider
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.config.BeanDefinition
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.ApplicationContext
 import org.springframework.context.MessageSource
@@ -30,18 +28,17 @@ class CommandConfiguration {
         }
     }
 
-    @ConditionalOnClass(name = ["com.destroystokyo.paper.event.server.AsyncTabCompleteEvent"])
-    @Scope(proxyMode = ScopedProxyMode.DEFAULT)
+    @ConditionalOnMissingBean
     @Bean
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    fun paperTabCompleter(
+    fun commandTabCompletionProvider(
         commandMappingRegistry: CommandMappingRegistry,
         commandArgumentConversionService: CommandArgumentConversionService
-    ): PaperTabCompleter {
-        return PaperTabCompleter(commandMappingRegistry, commandArgumentConversionService)
+    ): CommandTabCompletionProvider {
+        return CommandTabCompletionProviderImpl(commandMappingRegistry, commandArgumentConversionService)
     }
 
-    @ConditionalOnMissingBean(CommandExecutor::class)
+    @ConditionalOnMissingBean
     @Bean
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
     fun commandExecutor(
