@@ -1,11 +1,11 @@
 package kr.summitsystems.springbukkit.coroutines.command.annotation
 
 import kotlinx.coroutines.CoroutineScope
-import kr.summitsystems.springbukkit.command.CommandContextHolder
-import kr.summitsystems.springbukkit.command.CommandExecutor
-import kr.summitsystems.springbukkit.command.CommandFeedbackSource
-import kr.summitsystems.springbukkit.command.CommandMappingRegistry
-import kr.summitsystems.springbukkit.command.convert.CommandArgumentConversionService
+import kr.summitsystems.springbukkit.core.command.CommandContextHolder
+import kr.summitsystems.springbukkit.core.command.CommandExecutor
+import kr.summitsystems.springbukkit.core.command.CommandFeedbackSource
+import kr.summitsystems.springbukkit.core.command.CommandMappingRegistry
+import kr.summitsystems.springbukkit.core.command.convert.CommandArgumentConversionService
 import kr.summitsystems.springbukkit.coroutines.command.CoroutinesCommandExecutor
 import org.springframework.beans.factory.ObjectProvider
 import org.springframework.beans.factory.annotation.Qualifier
