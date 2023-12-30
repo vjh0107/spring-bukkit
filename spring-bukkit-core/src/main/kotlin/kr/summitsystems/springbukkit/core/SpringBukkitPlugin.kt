@@ -1,17 +1,15 @@
 package kr.summitsystems.springbukkit.core
 
-import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.plugin.java.JavaPlugin
 import org.springframework.boot.Banner
 import org.springframework.boot.WebApplicationType
 import org.springframework.boot.builder.SpringApplicationBuilder
+import org.springframework.boot.env.YamlPropertySourceLoader
 import org.springframework.context.ApplicationContextInitializer
 import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.core.annotation.AnnotationUtils
-import org.springframework.core.env.PropertiesPropertySource
-import org.springframework.core.env.PropertySource
-import java.lang.IllegalStateException
-import java.util.*
+import org.springframework.core.io.FileSystemResource
+import java.io.File
 
 abstract class SpringBukkitPlugin : JavaPlugin(), ApplicationContextInitializer<ConfigurableApplicationContext> {
     private var applicationContext: ConfigurableApplicationContext? = null
@@ -55,30 +53,18 @@ abstract class SpringBukkitPlugin : JavaPlugin(), ApplicationContextInitializer<
 
     private fun registerPropertySource(applicationContext: ConfigurableApplicationContext) {
         val propertySources = applicationContext.environment.propertySources
-        propertySources.addLast(BukkitPropertySource(this@SpringBukkitPlugin.config))
-        val properties = Properties().apply {
-            put("plugin.name", this@SpringBukkitPlugin.name)
+        val configFile = File(this@SpringBukkitPlugin.dataFolder.absolutePath + "/config.yml")
+        if (configFile.exists()) {
+            val resource = FileSystemResource(configFile)
+            val yamlPropertySourceLoader = YamlPropertySourceLoader()
+            val yamlPropertySources = yamlPropertySourceLoader.load("spring-bukkit", resource)
+            yamlPropertySources.forEach { yamlPropertySource ->
+                propertySources.addLast(yamlPropertySource)
+            }
         }
-        propertySources.addLast(PropertiesPropertySource("spring-bukkit-api", properties))
     }
 
     private fun registerPluginBean(applicationContext: ConfigurableApplicationContext) {
         applicationContext.beanFactory.registerSingleton("plugin", this)
-    }
-
-    private class BukkitPropertySource(
-        private val config: FileConfiguration
-    ) : PropertySource<FileConfiguration>("bukkit_yaml") {
-        override fun getProperty(name: String): Any? {
-            return config.get(name)
-        }
-
-        override fun containsProperty(name: String): Boolean {
-            return config.contains(name)
-        }
-
-        override fun getSource(): FileConfiguration {
-            return config
-        }
     }
 }
