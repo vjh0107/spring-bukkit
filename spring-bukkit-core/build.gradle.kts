@@ -12,6 +12,7 @@ dependencies {
     api(libs.spring.boot.autoconfigure)
     api(libs.spring.aspects)
     api(libs.spring.tx)
+    api(libs.jakarta.annotation)
 
     testImplementation(libs.spigot)
     testImplementation(libs.spring.test)
