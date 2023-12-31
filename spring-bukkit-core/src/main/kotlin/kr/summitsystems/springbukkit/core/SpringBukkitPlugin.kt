@@ -8,8 +8,10 @@ import org.springframework.boot.env.YamlPropertySourceLoader
 import org.springframework.context.ApplicationContextInitializer
 import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.core.annotation.AnnotationUtils
+import org.springframework.core.env.PropertiesPropertySource
 import org.springframework.core.io.FileSystemResource
 import java.io.File
+import java.util.*
 
 abstract class SpringBukkitPlugin : JavaPlugin(), ApplicationContextInitializer<ConfigurableApplicationContext> {
     private var applicationContext: ConfigurableApplicationContext? = null
@@ -27,8 +29,15 @@ abstract class SpringBukkitPlugin : JavaPlugin(), ApplicationContextInitializer<
     }
 
     private fun loadDefaultConfig() {
-        getResource("config.yml") ?: return
-        saveDefaultConfig()
+        loadResource("application.yml")
+        loadResource("config.yml")
+        loadResource("application.properties")
+    }
+
+    private fun loadResource(filename: String) {
+        if (getResource(filename) != null && !File(dataFolder, filename).exists()) {
+            saveResource(filename, false)
+        }
     }
 
     protected abstract fun getApplicationClass(): Class<*>
@@ -47,20 +56,30 @@ abstract class SpringBukkitPlugin : JavaPlugin(), ApplicationContextInitializer<
     }
 
     override fun initialize(applicationContext: ConfigurableApplicationContext) {
-        registerPropertySource(applicationContext)
+        registerYamlPropertySource(applicationContext, "application.yml")
+        registerYamlPropertySource(applicationContext, "config.yml")
+        registerPropertiesPropertySource(applicationContext, "application.properties")
         registerPluginBean(applicationContext)
     }
 
-    private fun registerPropertySource(applicationContext: ConfigurableApplicationContext) {
-        val propertySources = applicationContext.environment.propertySources
-        val configFile = File(this@SpringBukkitPlugin.dataFolder.absolutePath + "/config.yml")
+    private fun registerYamlPropertySource(applicationContext: ConfigurableApplicationContext, file: String) {
+        val configFile = File(this@SpringBukkitPlugin.dataFolder.absolutePath + "/" + file)
         if (configFile.exists()) {
             val resource = FileSystemResource(configFile)
             val yamlPropertySourceLoader = YamlPropertySourceLoader()
-            val yamlPropertySources = yamlPropertySourceLoader.load("spring-bukkit", resource)
+            val yamlPropertySources = yamlPropertySourceLoader.load("spring-bukkit-${file}", resource)
             yamlPropertySources.forEach { yamlPropertySource ->
-                propertySources.addLast(yamlPropertySource)
+                applicationContext.environment.propertySources.addLast(yamlPropertySource)
             }
+        }
+    }
+
+    private fun registerPropertiesPropertySource(applicationContext: ConfigurableApplicationContext, file: String) {
+        val configFile = File(this@SpringBukkitPlugin.dataFolder.absolutePath + "/" + file)
+        if (configFile.exists()) {
+            val properties = Properties().also { properties -> properties.load(configFile.inputStream()) }
+            val propertySource = PropertiesPropertySource("spring-bukkit-${file}", properties)
+            applicationContext.environment.propertySources.addLast(propertySource)
         }
     }
 
