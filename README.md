@@ -1,4 +1,5 @@
-# Spring Bukkit Framework [![Maven Central](https://img.shields.io/maven-central/v/kr.summitsystems/spring-bukkit-core.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/kr.summitsystems/spring-bukkit-core) [![Apache License v2.0](https://img.shields.io/badge/license-Apache%20v2.0-blue.svg)](https://github.com/summit-systems/spring-bukkit/blob/main/LICENSE.txt) [![Kotlin](https://img.shields.io/badge/kotlin-1.8.22-blue.svg?logo=kotlin)](http://kotlinlang.org)
+# Spring Bukkit Framework 
+[![Maven Central](https://img.shields.io/maven-central/v/kr.summitsystems/spring-bukkit-core.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/kr.summitsystems/spring-bukkit-core) [![Apache License v2.0](https://img.shields.io/badge/license-Apache%20v2.0-blue.svg)](https://github.com/summit-systems/spring-bukkit/blob/main/LICENSE.txt) [![Kotlin](https://img.shields.io/badge/kotlin-1.8.22-blue.svg?logo=kotlin)](http://kotlinlang.org) [![Discord](https://img.shields.io/discord/1180490815248801833?logo=discord&label=Discord)](https://discord.gg/nvzx939V2T)
 
 Spring Bukkit Framework is a powerful and flexible library designed to seamlessly integrate the Spring Framework with the Bukkit API, providing a robust foundation for developing Minecraft plugins with the benefits of Spring Framework.
 
@@ -14,7 +15,7 @@ Leverage the full capabilities of the Spring Framework within your Bukkit plugin
 ## Using in your projects
 ```kotlin
 dependencies {
-    implementation("kr.summitsystems:spring-bukkit-core:<version>")
+    implementation("kr.summitsystems:spring-bukkit-starter:<version>")
 }
 ```
 
@@ -27,7 +28,7 @@ name: ExamplePlugin
 version: 1.0.0
 main: org.example.exampleplugin.ExamplePlugin
 libraries:
-  - kr.summitsystems:spring-bukkit-core:1.0.0
+  - kr.summitsystems:spring-bukkit-starter:<version>
 ```
 
 ## Documentation
@@ -37,8 +38,3 @@ libraries:
 
 ## License
 The Spring Bukkit Framework is released under version 2.0 of the Apache License.
-
-
-
-
-
