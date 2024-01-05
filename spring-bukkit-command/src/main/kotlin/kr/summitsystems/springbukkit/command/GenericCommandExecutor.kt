@@ -25,7 +25,13 @@ open class GenericCommandExecutor(
         val commandMappings = allMappings.filter {
             inputQualifier.startsWith(it.qualifier)
         }
-        val targetMapping = commandMappings.singleOrNull() ?: commandMappingRegistry.find(commandName)!!
+        val targetMapping = commandMappings.singleOrNull() ?: commandMappingRegistry.find(commandName)
+        if (targetMapping == null) {
+            allMappings.forEach { mapping ->
+                sender.sendMessage(commandFeedbackSource.getUsageMessage(mapping, sender.getLocale()))
+            }
+            return
+        }
 
         val convertedParameters: MutableMap<Int, Any?> = mutableMapOf()
         var context: CommandContext = createCommandContext(sender, commandName, targetMapping, convertedParameters)
