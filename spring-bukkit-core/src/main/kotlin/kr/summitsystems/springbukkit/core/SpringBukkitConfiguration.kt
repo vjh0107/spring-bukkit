@@ -6,15 +6,15 @@ import kr.summitsystems.springbukkit.core.support.config.BukkitConfiguration
 import kr.summitsystems.springbukkit.core.support.config.DefaultMessageSourceConfiguration
 import org.springframework.context.annotation.*
 
+@Suppress("SpringComponentScan")
 @ComponentScans(
     ComponentScan(basePackages = ["kr.summitsystems.springbukkit.coroutines"]),
     ComponentScan(basePackages = ["kr.summitsystems.springbukkit.support"]),
-    ComponentScan(basePackages = ["kr.summitsystems.springbukkit.core.command"])
+    ComponentScan(basePackages = ["kr.summitsystems.springbukkit.command"])
 )
 @Import(
     BukkitConfiguration::class,
     CheckerConfiguration::class,
-    //CommandConfiguration::class,
     BukkitListenerConfiguration::class,
     DefaultMessageSourceConfiguration::class
 )

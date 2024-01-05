@@ -6,7 +6,7 @@ plugins {
 dependencies {
     compileOnly(libs.spigot)
 
-    api(project(":spring-bukkit-core"))
+    api(projects.springBukkitCore)
     api(libs.spring.boot.autoconfigure)
     api(libs.spring.data.jpa)
     api(libs.hibernate.core)

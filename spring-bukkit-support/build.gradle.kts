@@ -7,7 +7,9 @@ dependencies {
     compileOnly(libs.spigot)
     compileOnly(libs.paper)
 
-    api(project(":spring-bukkit-core"))
+    api(projects.springBukkitCore)
+    api(projects.springBukkitCommand)
+
     api(libs.kotlin.reflect)
     api(libs.spring.boot.autoconfigure)
     api(libs.spring.aspects)

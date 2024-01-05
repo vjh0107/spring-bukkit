@@ -1,6 +1,6 @@
 package kr.summitsystems.springbukkit.support
 
-import kr.summitsystems.springbukkit.core.command.CommandTabCompletionProvider
+import kr.summitsystems.springbukkit.command.CommandTabCompletionProvider
 import kr.summitsystems.springbukkit.support.paper.PaperTabCompleter
 import org.springframework.beans.factory.config.BeanDefinition
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass

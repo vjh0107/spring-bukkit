@@ -1,7 +1,7 @@
 package kr.summitsystems.springbukkit.support.paper
 
 import com.destroystokyo.paper.event.server.AsyncTabCompleteEvent
-import kr.summitsystems.springbukkit.core.command.CommandTabCompletionProvider
+import kr.summitsystems.springbukkit.command.CommandTabCompletionProvider
 import kr.summitsystems.springbukkit.core.listener.annotation.BukkitListener
 
 class PaperTabCompleter(

@@ -5,7 +5,9 @@ plugins {
 
 dependencies {
     compileOnly(libs.spigot)
-    implementation(project(":spring-bukkit-core"))
+
+    api(projects.springBukkitCore)
+    implementation(projects.springBukkitCommand)
 
     api(libs.kotlin.reflect)
     api(libs.kotlinx.coroutines.core)

@@ -6,11 +6,7 @@ plugins {
 dependencies {
     compileOnly(libs.spigot)
 
-    api(libs.kotlin.reflect)
-    api(libs.spring.boot.autoconfigure)
-    api(libs.spring.aspects)
-    api(libs.spring.tx)
-    api(libs.jakarta.annotation)
+    api(projects.springBukkitCore)
 
     testImplementation(libs.spigot)
     testImplementation(libs.spring.test)

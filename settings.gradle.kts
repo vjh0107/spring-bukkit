@@ -1,9 +1,11 @@
 rootProject.name = "spring-bukkit"
 
 includeBuild("build-logic")
+include("spring-bukkit-command")
 include("spring-bukkit-core")
 include("spring-bukkit-jpa")
 include("spring-bukkit-coroutines")
+include("spring-bukkit-starter")
 include("spring-bukkit-support")
 
 pluginManagement {
@@ -22,8 +24,9 @@ pluginManagement {
     }
 }
 
+@Suppress("UnstableApiUsage")
 dependencyResolutionManagement {
-    @Suppress("UnstableApiUsage")
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         mavenCentral()
         maven("https://repo.papermc.io/repository/maven-public/")
@@ -51,3 +54,5 @@ dependencyResolutionManagement {
         }
     }
 }
+
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
