@@ -1,23 +1,22 @@
 package kr.summitsystems.springbukkit.core.command.annotation
 
-import kr.summitsystems.springbukkit.core.command.*
-import kr.summitsystems.springbukkit.core.command.CommandExceptionHandlerRegistryImpl
+import kr.summitsystems.springbukkit.core.command.CommandContextHolder
+import kr.summitsystems.springbukkit.core.command.CommandExceptionHandlerRegistry
+import kr.summitsystems.springbukkit.core.command.CommandFeedbackSource
 import kr.summitsystems.springbukkit.core.command.convert.CommandArgumentConversionService
-import kr.summitsystems.springbukkit.core.command.support.BukkitCommandConfiguration
 import kr.summitsystems.springbukkit.core.command.support.DefaultCommandFeedbackSource
 import org.bukkit.Server
 import org.springframework.beans.factory.ObjectProvider
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.config.BeanDefinition
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.ApplicationContext
 import org.springframework.context.MessageSource
-import org.springframework.context.annotation.*
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Role
 
-@Import(BukkitCommandConfiguration::class)
-@Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 @Configuration
-class CommandConfiguration {
+class CommandAnnotationConfiguration {
     @Autowired
     fun setConfigurers(
         commandConfigurers: ObjectProvider<CommandConfigurer>
@@ -28,33 +27,6 @@ class CommandConfiguration {
         }
     }
 
-    @ConditionalOnMissingBean
-    @Bean
-    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    fun commandTabCompletionProvider(
-        commandMappingRegistry: CommandMappingRegistry,
-        commandArgumentConversionService: CommandArgumentConversionService
-    ): CommandTabCompletionProvider {
-        return CommandTabCompletionProviderImpl(commandMappingRegistry, commandArgumentConversionService)
-    }
-
-    @ConditionalOnMissingBean
-    @Bean
-    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    fun commandExecutor(
-        commandMappingRegistry: CommandMappingRegistry,
-        commandFeedbackSource: CommandFeedbackSource,
-        commandContextHolder: CommandContextHolder,
-        commandArgumentConversionService: CommandArgumentConversionService
-    ): CommandExecutor {
-        return GenericCommandExecutor(
-            commandMappingRegistry,
-            commandFeedbackSource,
-            commandContextHolder,
-            commandArgumentConversionService
-        )
-    }
-
     @Bean
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
     fun commandMappingAdvisor(
@@ -62,27 +34,6 @@ class CommandConfiguration {
         commandContextHolder: CommandContextHolder
     ): CommandMappingAdvisor {
         return CommandMappingAdvisor(commandExceptionHandlerRegistry, commandContextHolder)
-    }
-
-    @Bean
-    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    fun commandExceptionHandlerRegistry(): CommandExceptionHandlerRegistry {
-        return CommandExceptionHandlerRegistryImpl()
-    }
-
-    @Bean
-    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    fun commandFeedbackSource(
-        commandConfigurers: ObjectProvider<CommandConfigurer>,
-        messageSource: MessageSource
-    ): CommandFeedbackSource {
-        return commandConfigurers.singleOrNull()?.getCommandFeedbackSource() ?: DefaultCommandFeedbackSource(messageSource)
-    }
-
-    @Bean
-    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    fun commandContextHolder(): CommandContextHolder {
-        return ThreadCommandContextHolder()
     }
 
     @Bean
@@ -101,12 +52,6 @@ class CommandConfiguration {
         return CommandControllerAdviceAnnotationBeanPostProcessor(applicationContext)
     }
 
-    @Bean
-    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    fun commandMappingRegistry(): CommandMappingRegistry {
-        return CommandMappingRegistry()
-    }
-
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
     @Bean
     fun commandArgumentConversionService(
@@ -119,5 +64,14 @@ class CommandConfiguration {
             configurer.addArgumentConverter(service)
         }
         return service
+    }
+
+    @Bean
+    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
+    fun commandFeedbackSource(
+        commandConfigurers: ObjectProvider<CommandConfigurer>,
+        messageSource: MessageSource
+    ): CommandFeedbackSource {
+        return commandConfigurers.singleOrNull()?.getCommandFeedbackSource() ?: DefaultCommandFeedbackSource(messageSource)
     }
 }

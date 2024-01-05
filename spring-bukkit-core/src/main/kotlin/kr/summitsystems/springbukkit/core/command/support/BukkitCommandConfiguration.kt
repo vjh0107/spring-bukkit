@@ -7,9 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.context.annotation.Import
 
-@Import(BukkitCommandConfiguration.Registrar::class)
 @Configuration
 class BukkitCommandConfiguration {
 
@@ -19,7 +17,7 @@ class BukkitCommandConfiguration {
     }
 
     @Configuration
-    class Registrar {
+    class BukkitCommandRegistrar {
         @Autowired
         fun registerCommand(
             plugin: Plugin,
