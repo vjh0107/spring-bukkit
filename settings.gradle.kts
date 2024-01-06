@@ -7,6 +7,7 @@ include("spring-bukkit-jpa")
 include("spring-bukkit-coroutines")
 include("spring-bukkit-starter")
 include("spring-bukkit-support")
+include("spring-bukkit-view")
 
 pluginManagement {
     plugins {

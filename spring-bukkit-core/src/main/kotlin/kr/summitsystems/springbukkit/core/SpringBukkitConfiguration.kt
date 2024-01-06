@@ -10,7 +10,8 @@ import org.springframework.context.annotation.*
 @ComponentScans(
     ComponentScan(basePackages = ["kr.summitsystems.springbukkit.coroutines"]),
     ComponentScan(basePackages = ["kr.summitsystems.springbukkit.support"]),
-    ComponentScan(basePackages = ["kr.summitsystems.springbukkit.command"])
+    ComponentScan(basePackages = ["kr.summitsystems.springbukkit.command"]),
+    ComponentScan(basePackages = ["kr.summitsystems.springbukkit.view"])
 )
 @Import(
     BukkitConfiguration::class,
