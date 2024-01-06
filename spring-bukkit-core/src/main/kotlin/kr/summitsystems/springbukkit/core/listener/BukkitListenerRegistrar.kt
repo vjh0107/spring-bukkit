@@ -1,5 +1,6 @@
 package kr.summitsystems.springbukkit.core.listener
 
+import org.bukkit.event.EventPriority
 import java.lang.reflect.Method
 
 interface BukkitListenerRegistrar {
@@ -7,7 +8,7 @@ interface BukkitListenerRegistrar {
         eventClass: Class<*>,
         instance: Any,
         method: Method,
-        handleOrder: HandleOrder,
+        eventPriority: EventPriority,
         ignoreCancelled: Boolean
     )
 }

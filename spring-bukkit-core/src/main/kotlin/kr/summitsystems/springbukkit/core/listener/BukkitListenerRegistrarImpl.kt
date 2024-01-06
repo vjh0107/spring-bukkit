@@ -4,10 +4,7 @@ import org.bukkit.event.Event
 import org.bukkit.event.EventPriority
 import org.bukkit.event.HandlerList
 import org.bukkit.event.Listener
-import org.bukkit.plugin.Plugin
-import org.bukkit.plugin.PluginManager
-import org.bukkit.plugin.RegisteredListener
-import org.bukkit.plugin.SimplePluginManager
+import org.bukkit.plugin.*
 import java.lang.reflect.Method
 
 class BukkitListenerRegistrarImpl(
@@ -19,29 +16,26 @@ class BukkitListenerRegistrarImpl(
         eventClass: Class<*>,
         instance: Any,
         method: Method,
-        handleOrder: HandleOrder,
+        eventPriority: EventPriority,
         ignoreCancelled: Boolean
     ) {
         if (eventClass.isAssignableFrom(Event::class.java)) {
             throw IllegalStateException("first parameter of event handler must be event. (method: ${method.name}, parameter1: ${eventClass.simpleName})")
         }
         val executor = eventExecutorFactory.create(eventClass, instance, method)
-        val eventListeners = SimplePluginManager::class.java.getDeclaredMethod("getEventListeners", Class::class.java)
-        eventListeners.isAccessible = true
-        val listener = RegisteredListener(object : Listener {}, executor, getBukkitEventPriority(handleOrder), plugin, ignoreCancelled)
-
-        val handlerList = eventListeners.invoke(pluginManager, eventClass) as HandlerList
-        handlerList.register(listener)
+        val listener = bakeListener(executor, eventPriority, plugin, ignoreCancelled)
+        registerBakedListener(eventClass, listener)
     }
 
-    private fun getBukkitEventPriority(handleOrder: HandleOrder): EventPriority {
-        return when(handleOrder) {
-            HandleOrder.FIRST -> EventPriority.LOWEST
-            HandleOrder.EARLY -> EventPriority.LOW
-            HandleOrder.NORMAL -> EventPriority.NORMAL
-            HandleOrder.LATE -> EventPriority.HIGH
-            HandleOrder.LAST -> EventPriority.HIGHEST
-            HandleOrder.MONITOR -> EventPriority.MONITOR
-        }
+    private fun bakeListener(executor: EventExecutor, priority: EventPriority, plugin: Plugin, ignoreCancelled: Boolean): RegisteredListener {
+        return RegisteredListener(object : Listener {}, executor, priority, plugin, ignoreCancelled)
+    }
+
+    private fun registerBakedListener(eventClass: Class<*>, registeredListener: RegisteredListener) {
+        val eventListeners = SimplePluginManager::class.java.getDeclaredMethod("getEventListeners", Class::class.java)
+        eventListeners.isAccessible = true
+
+        val handlerList = eventListeners.invoke(pluginManager, eventClass) as HandlerList
+        handlerList.register(registeredListener)
     }
 }

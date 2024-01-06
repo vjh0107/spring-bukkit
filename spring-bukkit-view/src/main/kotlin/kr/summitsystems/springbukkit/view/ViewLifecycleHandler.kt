@@ -1,13 +1,13 @@
 package kr.summitsystems.springbukkit.view
 
-import kr.summitsystems.springbukkit.core.listener.annotation.BukkitListener
 import org.bukkit.entity.Player
+import org.bukkit.event.EventHandler
 import org.bukkit.event.inventory.InventoryOpenEvent
 import org.springframework.stereotype.Component
 
 @Component
 class ViewLifecycleHandler {
-    @BukkitListener
+    @EventHandler
     fun onViewOpen(event: InventoryOpenEvent) {
         val holder = event.inventory.holder
         if (holder is ViewLifecycle<*>) {

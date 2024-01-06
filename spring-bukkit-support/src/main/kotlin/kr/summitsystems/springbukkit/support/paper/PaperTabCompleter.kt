@@ -2,12 +2,12 @@ package kr.summitsystems.springbukkit.support.paper
 
 import com.destroystokyo.paper.event.server.AsyncTabCompleteEvent
 import kr.summitsystems.springbukkit.command.CommandTabCompletionProvider
-import kr.summitsystems.springbukkit.core.listener.annotation.BukkitListener
+import org.bukkit.event.EventHandler
 
 class PaperTabCompleter(
     private val commandTabCompletionProvider: CommandTabCompletionProvider
 ) {
-    @BukkitListener
+    @EventHandler
     fun onTabComplete(event: AsyncTabCompleteEvent) {
         if (!event.isCommand || event.buffer.indexOf(' ') == -1) {
             return

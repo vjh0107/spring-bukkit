@@ -1,9 +1,5 @@
-package kr.summitsystems.springbukkit.core.listener.annotation
+package kr.summitsystems.springbukkit.core.listener
 
-import kr.summitsystems.springbukkit.core.listener.BukkitListenerRegistrar
-import kr.summitsystems.springbukkit.core.listener.BukkitListenerRegistrarImpl
-import kr.summitsystems.springbukkit.core.listener.EventExecutorFactory
-import kr.summitsystems.springbukkit.core.listener.SimpleEventExecutorFactory
 import org.bukkit.plugin.Plugin
 import org.bukkit.plugin.PluginManager
 import org.springframework.beans.factory.config.BeanDefinition

@@ -1,7 +1,7 @@
 package kr.summitsystems.springbukkit.view
 
-import kr.summitsystems.springbukkit.core.listener.annotation.BukkitListener
 import org.bukkit.entity.Player
+import org.bukkit.event.EventHandler
 import org.bukkit.event.inventory.InventoryCloseEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.inventory.Inventory
@@ -19,7 +19,7 @@ class NavigatorImpl(
 ) : Navigator {
     private val views: ConcurrentHashMap<UUID, Stack<NamedView>> = ConcurrentHashMap()
 
-    @BukkitListener
+    @EventHandler
     fun onInventoryClose(event: InventoryCloseEvent) {
         val view = event.inventory.holder
         val player = event.player
@@ -34,7 +34,7 @@ class NavigatorImpl(
         }
     }
 
-    @BukkitListener
+    @EventHandler
     fun onPlayerQuit(event: PlayerQuitEvent) {
         views.remove(event.player.uniqueId)
     }

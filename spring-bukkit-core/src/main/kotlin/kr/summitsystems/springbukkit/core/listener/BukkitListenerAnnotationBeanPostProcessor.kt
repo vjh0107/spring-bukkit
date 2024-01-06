@@ -1,7 +1,7 @@
-package kr.summitsystems.springbukkit.core.listener.annotation
+package kr.summitsystems.springbukkit.core.listener
 
-import kr.summitsystems.springbukkit.core.listener.BukkitListenerRegistrar
 import org.apache.commons.logging.LogFactory
+import org.bukkit.event.EventHandler
 import org.springframework.aop.framework.AopInfrastructureBean
 import org.springframework.aop.framework.AopProxyUtils
 import org.springframework.beans.factory.config.BeanPostProcessor
@@ -15,7 +15,7 @@ class BukkitListenerAnnotationBeanPostProcessor(
 ) : BeanPostProcessor {
     private val logger = LogFactory.getLog(javaClass)
 
-    private fun getBukkitListenerRegistrar(): BukkitListenerRegistrar {
+    private fun getListenerRegistrar(): BukkitListenerRegistrar {
         return applicationContext.getBean(BukkitListenerRegistrar::class.java)
     }
 
@@ -25,17 +25,16 @@ class BukkitListenerAnnotationBeanPostProcessor(
         }
 
         val targetClass = AopProxyUtils.ultimateTargetClass(bean)
-        if (AnnotationUtils.isCandidateClass(targetClass, listOf(BukkitListener::class.java))) {
+        if (AnnotationUtils.isCandidateClass(targetClass, listOf(EventHandler::class.java))) {
             val annotatedMethods = MethodIntrospector.selectMethods(targetClass) { method ->
-                AnnotatedElementUtils.isAnnotated(method, BukkitListener::class.java)
+                AnnotatedElementUtils.isAnnotated(method, EventHandler::class.java)
             }
             if (annotatedMethods.isNotEmpty()) {
                 annotatedMethods.forEach { listenerMethod ->
                     val event = listenerMethod.parameters.firstOrNull()?.type
                         ?: throw IllegalStateException("first parameter of event handler must be event but null. method: $listenerMethod")
-
-                    val annotation = AnnotationUtils.getAnnotation(listenerMethod, BukkitListener::class.java) ?: throw IllegalStateException("Annotation @Listener not found.")
-                    getBukkitListenerRegistrar().registerListener(event, bean, listenerMethod, annotation.handleOrder, annotation.ignoreCancelled)
+                    val annotation = AnnotationUtils.getAnnotation(listenerMethod, EventHandler::class.java) ?: throw IllegalStateException("Annotation @EventHandler not found.")
+                    getListenerRegistrar().registerListener(event, bean, listenerMethod, annotation.priority, annotation.ignoreCancelled)
                     logger.trace("listener named ${listenerMethod.name} registered.")
                 }
             }

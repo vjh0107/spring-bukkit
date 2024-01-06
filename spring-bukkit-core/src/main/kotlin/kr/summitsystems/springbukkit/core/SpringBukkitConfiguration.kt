@@ -1,7 +1,7 @@
 package kr.summitsystems.springbukkit.core
 
 import kr.summitsystems.springbukkit.core.checker.annotation.CheckerConfiguration
-import kr.summitsystems.springbukkit.core.listener.annotation.BukkitListenerConfiguration
+import kr.summitsystems.springbukkit.core.listener.BukkitListenerConfiguration
 import kr.summitsystems.springbukkit.core.support.config.BukkitConfiguration
 import kr.summitsystems.springbukkit.core.support.config.DefaultMessageSourceConfiguration
 import org.springframework.context.annotation.*
