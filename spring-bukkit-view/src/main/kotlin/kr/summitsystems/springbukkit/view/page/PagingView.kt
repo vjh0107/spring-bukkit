@@ -9,7 +9,9 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 
 abstract class PagingView<C : ChestViewInitializationContext> : ChestView<C>() {
-    private var currentPage: Int = START_PAGE_INDEX
+    var currentPage: Int = START_PAGE_INDEX
+        private set
+
     private val pages: MutableMap<Int, PagingViewItemLayoutContainer> by lazy {
         mutableMapOf<Int, PagingViewItemLayoutContainer>().also { map ->
             map[START_PAGE_INDEX] = PagingViewItemLayoutContainer(this)
@@ -27,7 +29,7 @@ abstract class PagingView<C : ChestViewInitializationContext> : ChestView<C>() {
     }
 
     final override fun onRender(viewer: Player) {
-         onPageRender(viewer)
+        onPageRender(viewer)
     }
 
     /**
@@ -36,30 +38,30 @@ abstract class PagingView<C : ChestViewInitializationContext> : ChestView<C>() {
     open fun onPageRender(viewer: Player) {}
 
     override fun findItemLayout(slot: Int): ViewItemLayout? {
-        return getCurrentPage().findItemLayout(slot)
+        return getCurrentPageLayouts().findItemLayout(slot)
     }
 
     override fun itemLayout(itemStack: ItemStack, slot: Int, vararg additionalSlots: Int): ViewItemLayout {
-        return getCurrentPage().itemLayout(itemStack, slot, *additionalSlots)
+        return getCurrentPageLayouts().itemLayout(itemStack, slot, *additionalSlots)
     }
 
     fun hasNextPage(): Boolean {
-        return findNextPage() != null
+        return findNextPageLayouts() != null
     }
 
     fun hasPreviousPage(): Boolean {
-        return findPreviousPage() != null
+        return findPreviousPageLayouts() != null
     }
 
     fun goNextPage(): Boolean {
-        val nextPage = findNextPage() ?: return false
+        val nextPage = findNextPageLayouts() ?: return false
         nextPage.setup()
         currentPage++
         return true
     }
 
     fun goPreviousPage(): Boolean {
-        val previousPage = findPreviousPage() ?: return false
+        val previousPage = findPreviousPageLayouts() ?: return false
         previousPage.setup()
         currentPage--
         return true
@@ -70,15 +72,15 @@ abstract class PagingView<C : ChestViewInitializationContext> : ChestView<C>() {
         pages[page] = container
     }
 
-    private fun findNextPage(): PagingViewItemLayoutContainer? {
+    private fun findNextPageLayouts(): PagingViewItemLayoutContainer? {
         return pages[currentPage + 1]
     }
 
-    private fun findPreviousPage(): PagingViewItemLayoutContainer? {
+    private fun findPreviousPageLayouts(): PagingViewItemLayoutContainer? {
         return pages[currentPage - 1]
     }
 
-    private fun getCurrentPage(): PagingViewItemLayoutContainer {
+    private fun getCurrentPageLayouts(): PagingViewItemLayoutContainer {
         return pages[currentPage]!!
     }
 }
