@@ -7,7 +7,6 @@ dependencies {
     compileOnly(libs.spigot)
 
     api(projects.springBukkitCore)
-    api(libs.spring.boot.autoconfigure)
     api(libs.spring.data.jpa)
     api(libs.hibernate.core)
     implementation(libs.hikaricp)

@@ -7,8 +7,8 @@ dependencies {
     api(projects.springBukkitCore)
     api(projects.springBukkitCommand)
     api(projects.springBukkitView)
+    runtimeOnly(projects.springBukkitSupport)
 
     api(libs.jakarta.annotation)
-
-    runtimeOnly(projects.springBukkitSupport)
+    api(libs.spring.tx)
 }
