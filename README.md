@@ -1,3 +1,5 @@
+<img src="https://github.com/summit-systems/spring-bukkit/raw/main/icon.png?size=96" alt="SpringBukkit" title="SpringBukkit" align="right"/>
+
 # Spring Bukkit Framework 
 [![Maven Central](https://img.shields.io/maven-central/v/kr.summitsystems/spring-bukkit-core.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/kr.summitsystems/spring-bukkit-core) [![Apache License v2.0](https://img.shields.io/badge/license-Apache%20v2.0-blue.svg)](https://github.com/summit-systems/spring-bukkit/blob/main/LICENSE.txt) [![Kotlin](https://img.shields.io/badge/kotlin-1.8.22-blue.svg?logo=kotlin)](http://kotlinlang.org) [![Discord](https://img.shields.io/discord/1180490815248801833?logo=discord&label=Discord)](https://discord.gg/nvzx939V2T)
 
@@ -7,11 +9,11 @@ Spring Bukkit Framework is a powerful and flexible library designed to seamlessl
 
 Leverage the full capabilities of the Spring Framework within your Bukkit plugins.
 - `CommandController` WebMvc styled CommandControllers play a crucial role in modern bukkit plugin development.
-- `Listener support` Bukkit Listeners will be auto registered with @BukkitListener.
+- `View` Navigatable view leads to making the user experience richer.
+- `Listener support` Bukkit Listeners will be auto registered.
 - `Coroutines support` Adapting kotlinx.coroutines to be compatible with Bukkit's MainThread.
-- `Configurations` The configurations for adapting Spring Framework in Bukkit plugins.
-- `JPA Support`: Provide Bukkit dedicated JPA converters.
-  
+- `JPA Support` Provide Bukkit dedicated JPA converters.
+
 ## Using in your projects
 ```kotlin
 dependencies {
