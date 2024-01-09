@@ -1,33 +1,28 @@
 rootProject.name = "spring-bukkit"
 
 includeBuild("build-logic")
-include("spring-bukkit-command")
-include("spring-bukkit-core")
-include("spring-bukkit-jpa")
-include("spring-bukkit-coroutines")
-include("spring-bukkit-starter")
-include("spring-bukkit-support")
-include("spring-bukkit-view")
 
-pluginManagement {
-    plugins {
-        val kotlinVersion = extra["kotlin.version"].toString()
-        kotlin("jvm") version kotlinVersion apply false
-        kotlin("plugin.spring") version kotlinVersion apply false
-        kotlin("plugin.jpa") version kotlinVersion apply false
+projects(
+    "command",
+    "core",
+    "jpa",
+    "coroutines",
+    "starter",
+    "support",
+    "view"
+)
 
-        val springBootVersion = extra["spring.boot.version"].toString()
-        id("org.springframework.boot") version springBootVersion apply false
-    }
-    repositories {
-        mavenCentral()
-        gradlePluginPortal()
+fun projects(vararg projects: String) {
+    projects.forEach { project ->
+        include(":spring-bukkit-$project")
+        project(":spring-bukkit-$project").name = project
     }
 }
 
 @Suppress("UnstableApiUsage")
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+
     repositories {
         mavenCentral()
         maven("https://repo.papermc.io/repository/maven-public/")
@@ -35,6 +30,10 @@ dependencyResolutionManagement {
 
     versionCatalogs {
         create("libs") {
+            plugin("kotlin-jvm", "org.jetbrains.kotlin.jvm").version(extra["kotlin.version"].toString())
+            plugin("kotlin-plugin-spring", "org.jetbrains.kotlin.plugin.spring").version(extra["kotlin.version"].toString())
+            plugin("spring-boot", "org.springframework.boot").version(extra["spring.boot.version"].toString())
+
             library("spigot", "org.spigotmc:spigot-api:${extra["spigot.version"]}")
             library("paper", "io.papermc.paper:paper-api:${extra["spigot.version"]}")
 

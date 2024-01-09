@@ -1,5 +1,4 @@
 plugins {
-    id("spring-bukkit.shared")
     id("spring-bukkit.publish")
 }
 

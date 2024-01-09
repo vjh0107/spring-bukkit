@@ -1,12 +1,11 @@
 plugins {
-    id("spring-bukkit.shared")
     id("spring-bukkit.publish")
 }
 
 dependencies {
     compileOnly(libs.spigot)
 
-    api(projects.springBukkitCore)
+    api(projects.core)
     api(libs.spring.data.jpa)
     api(libs.hibernate.core)
     implementation(libs.hikaricp)

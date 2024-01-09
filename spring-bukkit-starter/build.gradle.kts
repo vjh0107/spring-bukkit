@@ -4,10 +4,10 @@ plugins {
 }
 
 dependencies {
-    api(projects.springBukkitCore)
-    api(projects.springBukkitCommand)
-    api(projects.springBukkitView)
-    runtimeOnly(projects.springBukkitSupport)
+    api(projects.core)
+    api(projects.command)
+    api(projects.view)
+    runtimeOnly(projects.support)
 
     api(libs.jakarta.annotation)
     api(libs.spring.tx)
