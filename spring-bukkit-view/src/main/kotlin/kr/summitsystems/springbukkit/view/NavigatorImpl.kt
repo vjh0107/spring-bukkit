@@ -7,10 +7,13 @@ import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.inventory.Inventory
 import org.bukkit.plugin.Plugin
 import org.bukkit.scheduler.BukkitScheduler
+import org.springframework.beans.factory.config.BeanDefinition
+import org.springframework.context.annotation.Role
 import org.springframework.stereotype.Component
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
+@Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 @Component
 class NavigatorImpl(
     private val bukkitScheduler: BukkitScheduler,
