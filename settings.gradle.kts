@@ -5,6 +5,7 @@ includeBuild("build-logic")
 projects(
     "command",
     "core",
+    "jackson",
     "jpa",
     "coroutines",
     "starter",
@@ -50,6 +51,11 @@ dependencyResolutionManagement {
             library("hibernate-core", "org.hibernate.orm:hibernate-core:${extra["hibernate.version"]}")
             library("hikaricp", "com.zaxxer:HikariCP:${extra["hikaricp.version"]}")
 
+            library("jackson-databind", "com.fasterxml.jackson.core:jackson-databind:${extra["jackson.version"]}")
+            library("jackson-datatype-jdk8", "com.fasterxml.jackson.datatype:jackson-datatype-jdk8:${extra["jackson.version"]}")
+            library("jackson-datatype-jsr310", "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${extra["jackson.version"]}")
+            library("jackson-module-parameter-names", "com.fasterxml.jackson.module:jackson-module-parameter-names:${extra["jackson.version"]}")
+            library("jackson-module-kotlin", "com.fasterxml.jackson.module:jackson-module-kotlin:${extra["jackson.version"]}")
             library("spring-test", "org.springframework.boot:spring-boot-starter-test:${extra["spring.boot.version"]}")
         }
     }
