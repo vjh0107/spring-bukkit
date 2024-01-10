@@ -22,13 +22,6 @@ class BukkitListenerConfiguration {
         return BukkitListenerRegistrarImpl(plugin, pluginManager, executorFactory)
     }
 
-    @ConditionalOnMissingBean(EventExecutorFactory::class)
-    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    @Bean
-    fun eventExecutorFactory(): EventExecutorFactory {
-        return SimpleEventExecutorFactory()
-    }
-
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
     @Bean
     fun bukkitListenerAnnotationBeanPostProcessor(

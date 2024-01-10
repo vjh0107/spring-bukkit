@@ -1,7 +1,12 @@
 package kr.summitsystems.springbukkit.command
 
+import org.springframework.beans.factory.config.BeanDefinition
+import org.springframework.context.annotation.Role
+import org.springframework.stereotype.Component
 import java.util.concurrent.ConcurrentHashMap
 
+@Component
+@Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 class ThreadCommandContextHolder : CommandContextHolder {
     private val contextsByThreadId: MutableMap<Long, CommandContext> = ConcurrentHashMap()
 

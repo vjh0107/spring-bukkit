@@ -3,10 +3,15 @@ package kr.summitsystems.springbukkit.command
 import kr.summitsystems.springbukkit.command.convert.CommandArgumentConversionService
 import kr.summitsystems.springbukkit.command.convert.CommandArgumentConverterAdapter
 import org.springframework.aop.framework.AopProxyUtils
+import org.springframework.beans.factory.config.BeanDefinition
+import org.springframework.context.annotation.Role
 import org.springframework.core.annotation.OrderUtils
 import org.springframework.core.convert.TypeDescriptor
+import org.springframework.stereotype.Component
 import kotlin.reflect.full.allSuperclasses
 
+@Component
+@Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 class CommandTabCompletionProviderImpl(
     private val commandMappingRegistry: CommandMappingRegistry,
     private val commandArgumentConversionService: CommandArgumentConversionService

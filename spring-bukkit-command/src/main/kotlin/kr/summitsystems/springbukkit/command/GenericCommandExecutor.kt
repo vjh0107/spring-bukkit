@@ -4,15 +4,22 @@ import kr.summitsystems.springbukkit.command.annotation.CommandAuthorize
 import kr.summitsystems.springbukkit.core.util.extension.getLocale
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
+import org.springframework.beans.factory.config.BeanDefinition
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
+import org.springframework.context.annotation.Role
 import org.springframework.core.annotation.AnnotationUtils
 import org.springframework.core.convert.ConversionService
 import org.springframework.core.convert.ConverterNotFoundException
 import org.springframework.core.convert.TypeDescriptor
+import org.springframework.stereotype.Component
 import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Method
 import kotlin.reflect.jvm.jvmErasure
 import kotlin.reflect.jvm.kotlinFunction
 
+@ConditionalOnMissingBean(GenericCommandExecutor::class)
+@Component
+@Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 open class GenericCommandExecutor(
     protected val commandMappingRegistry: CommandMappingRegistry,
     protected val commandFeedbackSource: CommandFeedbackSource,

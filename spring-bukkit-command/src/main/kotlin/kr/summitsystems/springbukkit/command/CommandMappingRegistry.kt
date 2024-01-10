@@ -1,5 +1,11 @@
 package kr.summitsystems.springbukkit.command
 
+import org.springframework.beans.factory.config.BeanDefinition
+import org.springframework.context.annotation.Role
+import org.springframework.stereotype.Component
+
+@Role(BeanDefinition.ROLE_INFRASTRUCTURE)
+@Component
 class CommandMappingRegistry {
     private val nodes: MutableMap<String, RegistrableCommandMapping> = mutableMapOf()
 

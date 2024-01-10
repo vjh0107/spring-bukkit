@@ -5,7 +5,11 @@ import kotlinx.coroutines.runBlocking
 import org.bukkit.event.Event
 import org.bukkit.event.Listener
 import org.bukkit.plugin.EventExecutor
+import org.springframework.beans.factory.config.BeanDefinition
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Role
 import org.springframework.core.KotlinDetector
+import org.springframework.stereotype.Component
 import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Method
 import kotlin.reflect.full.callSuspend

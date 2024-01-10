@@ -1,7 +1,12 @@
 package kr.summitsystems.springbukkit.command
 
+import org.springframework.beans.factory.config.BeanDefinition
+import org.springframework.context.annotation.Role
 import org.springframework.core.convert.TypeDescriptor
+import org.springframework.stereotype.Component
 
+@Component
+@Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 internal class CommandExceptionHandlerRegistryImpl : CommandExceptionHandlerRegistry {
     private val handlers: MutableMap<TypeDescriptor, RegistrableCommandExceptionHandler> = mutableMapOf()
 
