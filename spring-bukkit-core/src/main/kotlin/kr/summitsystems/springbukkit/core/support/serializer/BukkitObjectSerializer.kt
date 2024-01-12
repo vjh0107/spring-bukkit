@@ -8,6 +8,7 @@ import org.bukkit.util.io.BukkitObjectInputStream
 import org.bukkit.util.io.BukkitObjectOutputStream
 import org.springframework.core.serializer.Deserializer
 import org.springframework.core.serializer.Serializer
+import org.springframework.stereotype.Component
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
@@ -15,9 +16,14 @@ import java.io.OutputStream
 import java.util.zip.DeflaterOutputStream
 import java.util.zip.InflaterOutputStream
 
-object ItemStackSerializer : BukkitObjectSerializer<ItemStack>(true)
-object LocationSerializer: BukkitObjectSerializer<Location>()
-object PotionEffectSerializer : BukkitObjectSerializer<PotionEffect>()
+@Component
+class ItemStackSerializer : BukkitObjectSerializer<ItemStack>(true)
+
+@Component
+class LocationSerializer: BukkitObjectSerializer<Location>()
+
+@Component
+class PotionEffectSerializer : BukkitObjectSerializer<PotionEffect>()
 
 open class BukkitObjectSerializer<T : ConfigurationSerializable>(
     private val deflate: Boolean = false
@@ -39,7 +45,12 @@ open class BukkitObjectSerializer<T : ConfigurationSerializable>(
     override fun serializeToByteArray(configurationSerializable: T): ByteArray {
         ByteArrayOutputStream().use { byteArrayOutputStream ->
             serialize(configurationSerializable, byteArrayOutputStream)
-            return deflateByteArray(byteArrayOutputStream.toByteArray())
+            val byteArray = byteArrayOutputStream.toByteArray()
+            return if (deflate) {
+                deflateByteArray(byteArray)
+            } else {
+                byteArray
+            }
         }
     }
 

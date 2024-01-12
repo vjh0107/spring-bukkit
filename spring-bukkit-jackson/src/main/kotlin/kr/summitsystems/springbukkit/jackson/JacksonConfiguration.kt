@@ -7,6 +7,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.KotlinFeature
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule
+import kr.summitsystems.springbukkit.jackson.serializer.BukkitSerializerModule
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -17,7 +18,8 @@ class JacksonConfiguration {
     @Bean
     fun objectMapper(
         parameterNamesModule: ParameterNamesModule,
-        kotlinModule: KotlinModule
+        kotlinModule: KotlinModule,
+        serializerModule: BukkitSerializerModule
     ): ObjectMapper {
         return ObjectMapper().apply {
             registerModules(
@@ -25,6 +27,7 @@ class JacksonConfiguration {
                 kotlinModule,
                 Jdk8Module(),
                 JavaTimeModule(),
+                serializerModule
             )
         }
     }
