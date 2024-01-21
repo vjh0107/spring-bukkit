@@ -13,8 +13,9 @@ import org.springframework.core.io.FileSystemResource
 import java.io.File
 import java.util.*
 
-abstract class SpringBukkitPlugin : JavaPlugin(), ApplicationContextInitializer<ConfigurableApplicationContext> {
+abstract class SpringBukkitPlugin : JavaPlugin(), ApplicationContextInitializer<ConfigurableApplicationContext>, DisposableContainer, Disposable {
     private var applicationContext: ConfigurableApplicationContext? = null
+    private val disposables: MutableList<Disposable> = mutableListOf()
 
     final override fun onEnable() {
         loadDefaultConfig()
@@ -25,7 +26,16 @@ abstract class SpringBukkitPlugin : JavaPlugin(), ApplicationContextInitializer<
     }
 
     final override fun onDisable() {
+        disposables.forEach { it.dispose() }
         applicationContext?.close()
+    }
+
+    final override fun dispose() {
+        server.pluginManager.disablePlugin(this)
+    }
+
+    final override fun addDisposable(disposable: Disposable) {
+        disposables.add(disposable)
     }
 
     private fun loadDefaultConfig() {

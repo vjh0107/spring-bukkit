@@ -11,7 +11,8 @@ projects(
     "kotlinx-serialization",
     "starter",
     "support",
-    "view"
+    "view",
+    "reactive"
 )
 
 fun projects(vararg projects: String) {
@@ -48,6 +49,7 @@ dependencyResolutionManagement {
             library("spring-boot-autoconfigure", "org.springframework.boot:spring-boot-autoconfigure:${extra["spring.boot.version"]}")
             library("spring-aspects", "org.springframework:spring-aspects:${extra["spring.version"]}")
             library("spring-tx", "org.springframework:spring-tx:${extra["spring.version"]}")
+            library("spring-test", "org.springframework.boot:spring-boot-starter-test:${extra["spring.boot.version"]}")
             library("jakarta-annotation", "jakarta.annotation:jakarta.annotation-api:${extra["jakarta.annotation.version"]}")
 
             library("spring-data-jpa", "org.springframework.data:spring-data-jpa:${extra["spring.data.jpa.version"]}")
@@ -59,7 +61,8 @@ dependencyResolutionManagement {
             library("jackson-datatype-jsr310", "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${extra["jackson.version"]}")
             library("jackson-module-parameter-names", "com.fasterxml.jackson.module:jackson-module-parameter-names:${extra["jackson.version"]}")
             library("jackson-module-kotlin", "com.fasterxml.jackson.module:jackson-module-kotlin:${extra["jackson.version"]}")
-            library("spring-test", "org.springframework.boot:spring-boot-starter-test:${extra["spring.boot.version"]}")
+
+            library("reactor", "io.projectreactor:reactor-core:${extra["reactor.version"]}")
         }
     }
 }

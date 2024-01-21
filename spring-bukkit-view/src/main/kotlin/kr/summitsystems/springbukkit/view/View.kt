@@ -1,6 +1,8 @@
 package kr.summitsystems.springbukkit.view
 
 import com.google.errorprone.annotations.OverridingMethodsMustInvokeSuper
+import kr.summitsystems.springbukkit.core.Disposable
+import kr.summitsystems.springbukkit.core.DisposableContainer
 import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.InventoryHolder
@@ -9,11 +11,13 @@ import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
 import org.springframework.context.support.GenericApplicationContext
 
-abstract class View<C : ViewInitializationContext> : ViewLifecycle<C>, ViewItemLayoutContainer, InventoryHolder, ViewModelProvider, ApplicationContextAware, Navigator {
+abstract class View<C : ViewInitializationContext> : ViewLifecycle<C>, ViewItemLayoutContainer, DisposableContainer, InventoryHolder, ViewModelProvider, ApplicationContextAware, Navigator,
+    Disposable {
     private val viewModelStore: ViewModelStore = ViewModelStore()
     private val viewLayouts: MutableMap<Int, ViewItemLayout> = mutableMapOf()
     private var isStandby: Boolean = false
     private var isDisposed: Boolean = false
+    private val disposables: MutableList<Disposable> = mutableListOf()
     private lateinit var applicationContext: ApplicationContext
     private lateinit var inventory: Inventory
 
@@ -70,13 +74,14 @@ abstract class View<C : ViewInitializationContext> : ViewLifecycle<C>, ViewItemL
         this.isStandby = false
     }
 
-    internal fun dispose() {
+    final override fun dispose() {
         viewModelStore.clear()
+        disposables.forEach { it.dispose() }
         onDispose()
         this.isDisposed = true
     }
 
-    internal fun isDisposed(): Boolean {
+    fun isDisposed(): Boolean {
         return isDisposed
     }
 
@@ -106,5 +111,9 @@ abstract class View<C : ViewInitializationContext> : ViewLifecycle<C>, ViewItemL
 
     override fun findItemLayout(slot: Int): ViewItemLayout? {
         return viewLayouts[slot]
+    }
+
+    final override fun addDisposable(disposable: Disposable) {
+        disposables.add(disposable)
     }
 }
