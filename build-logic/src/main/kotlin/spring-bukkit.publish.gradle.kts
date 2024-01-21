@@ -6,7 +6,7 @@ plugins {
 group = extra["project.group"].toString()
 version = extra["project.version"].toString()
 
-if (extra.properties.keys.any { it.startsWith("signing.") }) {
+if (extra.properties.keys.any { it.startsWith("signing.") } || System.getenv().keys.any { it.startsWith("SIGNING_") }) {
     setupPublication()
 }
 
@@ -21,16 +21,6 @@ fun setupPublication() {
     val projectDeveloperId = extra["project.developer.id"]!!.toString()
     val projectDeveloperName = extra["project.developer.name"]!!.toString()
     val projectDeveloperEmail = extra["project.developer.email"]!!.toString()
-
-    if (extra["signing.keyId"] == null) {
-        extra["signing.keyId"] = System.getenv("SIGNING_KEY_ID")
-    }
-    if (extra["signing.password"] == null) {
-        extra["signing.password"] = System.getenv("SIGNING_PASSPHRASE")
-    }
-    if (extra["signing.secretKeyRingFile"] == null) {
-        extra["signing.secretKeyRingFile"] = System.getenv("SIGNING_SECRET_KEY_RING_FILE")
-    }
 
     tasks.withType<Jar> {
         archiveClassifier.set("")
@@ -77,8 +67,17 @@ fun setupPublication() {
                         name = "sonatype"
                         setUrl("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
                         credentials {
-                            username = extra["ossrh.username"]?.toString() ?: System.getenv("OSSRH_USERNAME")
-                            password = extra["ossrh.password"]?.toString() ?: System.getenv("OSSRH_PASSWORD")
+                            username = if (extra.has("ossrh.username")) {
+                                extra["ossrh.username"].toString()
+                            } else {
+                                System.getenv("OSSRH_USERNAME")
+                            }
+
+                            password = if (extra.has("ossrh.password")) {
+                                extra["ossrh.password"].toString()
+                            } else {
+                                System.getenv("OSSRH_PASSWORD")
+                            }
                         }
                     }
                 }
@@ -87,6 +86,19 @@ fun setupPublication() {
                     setRequired {
                         !project.version.toString()
                             .contains("-SNAPSHOT") && gradle.taskGraph.allTasks.any { it is PublishToMavenRepository }
+                    }
+                    if (!extra.has("signing.keyId")) {
+                        extra["signing.keyId"] = System.getenv("SIGNING_KEY_ID")
+                            ?: throw IllegalStateException("SIGNING_KEY_ID not set.")
+                    }
+                    if (!extra.has("signing.password")) {
+                        extra["signing.password"] = System.getenv("SIGNING_PASSPHRASE")
+                            ?: throw IllegalStateException("SIGNING_PASSPHRASE not set.")
+                    }
+                    if (!extra.has("signing.secretKeyRingFile")) {
+                        extra["signing.secretKeyRingFile"] = System.getenv("SIGNING_SECRET_KEY_RING_FILE")?.let {
+                            System.getenv("HOME") + "/" + it
+                        } ?: throw IllegalStateException("SIGNING_SECRET_KEY_RING_FILE not set.")
                     }
                     sign(this@publications)
                 }
