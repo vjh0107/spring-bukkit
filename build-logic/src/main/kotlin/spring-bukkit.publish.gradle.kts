@@ -36,7 +36,7 @@ fun setupPublication() {
             create<MavenPublication>("default") {
                 this.groupId = group
                 this.version = version
-                this.artifactId = project.name.lowercase()
+                this.artifactId = "${project.rootProject.name}-${project.name.lowercase()}"
                 from(components["java"])
 
                 pom {
