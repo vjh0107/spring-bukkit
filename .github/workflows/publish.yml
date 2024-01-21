@@ -33,4 +33,4 @@ jobs:
     - name: Make gradlew executable
       run: chmod +x ./gradlew
     - name: Publish to Sonatype Repository
-      run: gradle publishAllPublicationsToMavenRepository
+      run: gradle publishMavenCentralPublicationToSonatypeRepository
