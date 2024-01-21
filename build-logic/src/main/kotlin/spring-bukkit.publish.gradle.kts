@@ -22,6 +22,16 @@ fun setupPublication() {
     val projectDeveloperName = extra["project.developer.name"]!!.toString()
     val projectDeveloperEmail = extra["project.developer.email"]!!.toString()
 
+    if (extra["signing.keyId"] == null) {
+        extra["signing.keyId"] = System.getenv("SIGNING_KEY_ID")
+    }
+    if (extra["signing.password"] == null) {
+        extra["signing.password"] = System.getenv("SIGNING_PASSPHRASE")
+    }
+    if (extra["signing.secretKeyRingFile"] == null) {
+        extra["signing.secretKeyRingFile"] = System.getenv("SIGNING_SECRET_KEY_RING_FILE")
+    }
+
     tasks.withType<Jar> {
         archiveClassifier.set("")
     }
@@ -33,7 +43,7 @@ fun setupPublication() {
 
     publishing {
         publications {
-            create<MavenPublication>("default") {
+            create<MavenPublication>("mavenCentral") {
                 this.groupId = group
                 this.version = version
                 this.artifactId = "${project.rootProject.name}-${project.name.lowercase()}"
@@ -67,8 +77,8 @@ fun setupPublication() {
                         name = "sonatype"
                         setUrl("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
                         credentials {
-                            username = extra["ossrh.username"]?.toString()
-                            password = extra["ossrh.password"]?.toString()
+                            username = extra["ossrh.username"]?.toString() ?: System.getenv("OSSRH_USERNAME")
+                            password = extra["ossrh.password"]?.toString() ?: System.getenv("OSSRH_PASSWORD")
                         }
                     }
                 }
