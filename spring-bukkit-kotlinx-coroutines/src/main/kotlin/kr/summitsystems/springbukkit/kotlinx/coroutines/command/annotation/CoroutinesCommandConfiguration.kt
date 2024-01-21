@@ -1,4 +1,4 @@
-package kr.summitsystems.springbukkit.coroutines.command.annotation
+package kr.summitsystems.springbukkit.kotlinx.coroutines.command.annotation
 
 import kotlinx.coroutines.CoroutineScope
 import org.springframework.beans.factory.ObjectProvider

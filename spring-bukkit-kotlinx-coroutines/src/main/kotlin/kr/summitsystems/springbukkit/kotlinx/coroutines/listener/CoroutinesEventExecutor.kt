@@ -1,4 +1,4 @@
-package kr.summitsystems.springbukkit.coroutines.listener
+package kr.summitsystems.springbukkit.kotlinx.coroutines.listener
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.runBlocking

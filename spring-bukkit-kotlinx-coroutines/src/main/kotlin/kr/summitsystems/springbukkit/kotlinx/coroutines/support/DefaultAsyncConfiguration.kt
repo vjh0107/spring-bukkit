@@ -1,4 +1,4 @@
-package kr.summitsystems.springbukkit.coroutines.support
+package kr.summitsystems.springbukkit.kotlinx.coroutines.support
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asExecutor

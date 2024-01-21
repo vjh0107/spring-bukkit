@@ -1,10 +1,10 @@
-package kr.summitsystems.springbukkit.coroutines.support
+package kr.summitsystems.springbukkit.kotlinx.coroutines.support
 
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kr.summitsystems.springbukkit.coroutines.PluginCoroutineContextElement
+import kr.summitsystems.springbukkit.kotlinx.coroutines.PluginCoroutineContextElement
 import org.bukkit.plugin.Plugin
 import org.springframework.beans.factory.config.BeanDefinition
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean

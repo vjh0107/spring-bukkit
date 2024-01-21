@@ -1,7 +1,7 @@
-package kr.summitsystems.springbukkit.coroutines.dispatcher
+package kr.summitsystems.springbukkit.kotlinx.coroutines.dispatcher
 
 import kotlinx.coroutines.*
-import kr.summitsystems.springbukkit.coroutines.PluginCoroutineContextElement
+import kr.summitsystems.springbukkit.kotlinx.coroutines.PluginCoroutineContextElement
 import org.bukkit.Bukkit
 import org.bukkit.Server
 import org.bukkit.plugin.IllegalPluginAccessException

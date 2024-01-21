@@ -8,6 +8,7 @@ projects(
     "jackson",
     "jpa",
     "coroutines",
+    "kotlinx-coroutines",
     "starter",
     "support",
     "view"

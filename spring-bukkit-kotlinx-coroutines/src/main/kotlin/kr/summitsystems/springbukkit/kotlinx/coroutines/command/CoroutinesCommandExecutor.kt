@@ -1,4 +1,4 @@
-package kr.summitsystems.springbukkit.coroutines.command
+package kr.summitsystems.springbukkit.kotlinx.coroutines.command
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
