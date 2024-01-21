@@ -1,13 +1,14 @@
 package kr.summitsystems.springbukkit.jackson
 
 import com.fasterxml.jackson.annotation.JsonCreator
+import com.fasterxml.jackson.databind.Module
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.KotlinFeature
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule
-import kr.summitsystems.springbukkit.jackson.serializer.BukkitSerializerModule
+import org.springframework.beans.factory.ObjectProvider
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -17,19 +18,21 @@ class JacksonConfiguration {
     @ConditionalOnMissingBean(ObjectMapper::class)
     @Bean
     fun objectMapper(
-        parameterNamesModule: ParameterNamesModule,
-        kotlinModule: KotlinModule,
-        serializerModule: BukkitSerializerModule
+        modules: ObjectProvider<Module>
     ): ObjectMapper {
         return ObjectMapper().apply {
-            registerModules(
-                parameterNamesModule,
-                kotlinModule,
-                Jdk8Module(),
-                JavaTimeModule(),
-                serializerModule
-            )
+            registerModules(modules)
         }
+    }
+
+    @Bean
+    fun javaTimeModule(): JavaTimeModule {
+        return JavaTimeModule()
+    }
+
+    @Bean
+    fun jdk8Module(): Jdk8Module {
+        return Jdk8Module()
     }
 
     @Bean
