@@ -36,6 +36,7 @@ dependencyResolutionManagement {
             plugin("kotlin-jvm", "org.jetbrains.kotlin.jvm").version(extra["kotlin.version"].toString())
             plugin("kotlin-plugin-spring", "org.jetbrains.kotlin.plugin.spring").version(extra["kotlin.version"].toString())
             plugin("spring-boot", "org.springframework.boot").version(extra["spring.boot.version"].toString())
+            plugin("graph-generator", "com.vanniktech.dependency.graph.generator").version(extra["graph.generator.version"].toString())
 
             library("spigot", "org.spigotmc:spigot-api:${extra["spigot.version"]}")
             library("paper", "io.papermc.paper:paper-api:${extra["spigot.version"]}")

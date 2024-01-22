@@ -7,7 +7,7 @@ dependencies {
     compileOnly(libs.paper)
 
     api(projects.core)
-    api(projects.command)
+    implementation(projects.command)
 
     testImplementation(libs.spigot)
     testImplementation(libs.spring.test)
