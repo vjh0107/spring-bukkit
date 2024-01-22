@@ -1,4 +1,4 @@
-package kr.summitsystems.springbukkit.reactive.view
+package kr.summitsystems.springbukkit.reactive
 
 import kr.summitsystems.springbukkit.core.DisposableContainer
 import reactor.core.publisher.Flux
