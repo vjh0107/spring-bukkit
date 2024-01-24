@@ -38,3 +38,14 @@ subprojects {
         extensions.getByType<JavaPluginExtension>().sourceCompatibility = JavaVersion.VERSION_17
     }
 }
+
+dependencyGraphGenerator {
+    projectGenerators.configureEach {
+        includeProject = { project ->
+            project.name != "starter"
+        }
+        projectNode = { node, _ ->
+            node.add(guru.nidi.graphviz.attribute.Style.SOLID, guru.nidi.graphviz.attribute.Color.rgb("#000000"))
+        }
+    }
+}
