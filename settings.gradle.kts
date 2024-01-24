@@ -27,6 +27,7 @@ dependencyResolutionManagement {
     repositories {
         mavenCentral()
         maven("https://repo.papermc.io/repository/maven-public/")
+        maven("https://repo.dmulloy2.net/repository/public/")
     }
 
     versionCatalogs {
@@ -39,6 +40,7 @@ dependencyResolutionManagement {
             library("spigot", "org.spigotmc:spigot-api:${extra["spigot.version"]}")
             library("paper", "io.papermc.paper:paper-api:${extra["spigot.version"]}")
             library("mockbukkit", "com.github.seeseemelk:MockBukkit-v1.20:${extra["mock.bukkit.version"]}")
+            library("protocollib", "com.comphenix.protocol:ProtocolLib:${extra["protocollib.version"]}")
 
             library("kotlin-stdlib", "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${extra["kotlin.version"]}")
             library("kotlin-reflect", "org.jetbrains.kotlin:kotlin-reflect:${extra["kotlin.version"]}")

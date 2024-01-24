@@ -14,6 +14,9 @@ val subProjectPlugins = listOf(
 )
 
 subprojects {
+    group = extra["project.group"].toString()
+    version = extra["project.version"].toString()
+
     subProjectPlugins.forEach {
         pluginManager.apply(it.get().pluginId)
     }
