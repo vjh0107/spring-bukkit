@@ -29,4 +29,11 @@ class BukkitListenerConfiguration {
     ): BukkitListenerAnnotationBeanPostProcessor {
         return BukkitListenerAnnotationBeanPostProcessor(applicationContext)
     }
+
+    @ConditionalOnMissingBean(EventExecutorFactory::class)
+    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
+    @Bean
+    fun defaultEventExecutorFactory(): EventExecutorFactory {
+        return SimpleEventExecutorFactory()
+    }
 }
