@@ -1,7 +1,3 @@
-plugins {
-    id("spring-bukkit.publish")
-}
-
 dependencies {
     compileOnly(libs.spigot)
     api(libs.kotlinx.coroutines.core)

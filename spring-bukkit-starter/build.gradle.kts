@@ -1,8 +1,3 @@
-plugins {
-    kotlin("jvm")
-    id("spring-bukkit.publish")
-}
-
 dependencies {
     api(projects.core)
     api(projects.command)

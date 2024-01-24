@@ -1,7 +1,5 @@
 rootProject.name = "spring-bukkit"
 
-includeBuild("build-logic")
-
 projects(
     "command",
     "core",
