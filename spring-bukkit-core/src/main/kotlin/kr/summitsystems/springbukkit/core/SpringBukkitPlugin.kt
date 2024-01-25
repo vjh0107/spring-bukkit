@@ -53,19 +53,16 @@ abstract class SpringBukkitPlugin : JavaPlugin(), ApplicationContextInitializer<
     protected abstract fun getApplicationClass(): Class<*>
 
     private fun runApplication(applicationSource: Class<*>): ConfigurableApplicationContext {
-        val genuineClassLoader = Thread.currentThread().contextClassLoader
         Thread.currentThread().contextClassLoader = this.classLoader
         return SpringApplicationBuilder(applicationSource)
             .web(WebApplicationType.NONE)
             .bannerMode(Banner.Mode.OFF)
             .initializers(this)
             .run()
-            .also {
-                Thread.currentThread().contextClassLoader = genuineClassLoader
-            }
     }
 
     override fun initialize(applicationContext: ConfigurableApplicationContext) {
+        applicationContext.setClassLoader(this.classLoader)
         registerYamlPropertySource(applicationContext, "application.yml")
         registerYamlPropertySource(applicationContext, "config.yml")
         registerPropertiesPropertySource(applicationContext, "application.properties")
