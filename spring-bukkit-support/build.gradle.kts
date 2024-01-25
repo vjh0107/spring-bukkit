@@ -1,7 +1,7 @@
 dependencies {
     compileOnly(libs.paper)
     compileOnly(libs.folia)
-    implementation(libs.protocollib)
+    compileOnly(libs.protocollib)
 
     api(projects.core)
     implementation(projects.command)
