@@ -9,6 +9,7 @@ import org.springframework.context.ApplicationContextInitializer
 import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.core.annotation.AnnotationUtils
 import org.springframework.core.env.PropertiesPropertySource
+import org.springframework.core.io.DefaultResourceLoader
 import org.springframework.core.io.FileSystemResource
 import java.io.File
 import java.util.*
@@ -54,7 +55,7 @@ abstract class SpringBukkitPlugin : JavaPlugin(), ApplicationContextInitializer<
 
     private fun runApplication(applicationSource: Class<*>): ConfigurableApplicationContext {
         Thread.currentThread().contextClassLoader = this.classLoader
-        return SpringApplicationBuilder(applicationSource)
+        return SpringApplicationBuilder(DefaultResourceLoader(this.classLoader), applicationSource)
             .web(WebApplicationType.NONE)
             .bannerMode(Banner.Mode.OFF)
             .initializers(this)
