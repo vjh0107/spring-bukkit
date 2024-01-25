@@ -2,7 +2,7 @@ dependencies {
     api(projects.core)
     api(projects.command)
     api(projects.view)
-    runtimeOnly(projects.support)
+    implementation(projects.support)
 
     api(libs.jakarta.annotation)
     api(libs.spring.tx)

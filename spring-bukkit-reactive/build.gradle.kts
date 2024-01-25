@@ -1,9 +1,9 @@
 dependencies {
     compileOnly(libs.spigot)
+    api(libs.reactor)
 
     api(projects.core)
-    api(libs.reactor)
-    implementation(projects.view)
+    compileOnly(projects.view)
 
     testImplementation(libs.paper)
     testImplementation(libs.spring.test)

@@ -3,7 +3,7 @@ dependencies {
     api(libs.kotlinx.coroutines.core)
 
     api(projects.core)
-    implementation(projects.command)
+    compileOnly(projects.command)
 
     testImplementation(libs.spigot)
     testImplementation(libs.spring.test)

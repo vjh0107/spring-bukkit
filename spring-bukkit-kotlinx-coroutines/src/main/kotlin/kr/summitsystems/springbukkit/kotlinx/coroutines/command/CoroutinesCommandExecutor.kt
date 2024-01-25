@@ -5,7 +5,7 @@ import kotlinx.coroutines.launch
 import kr.summitsystems.springbukkit.command.*
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.config.BeanDefinition
-import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Primary
 import org.springframework.context.annotation.Role
 import org.springframework.core.KotlinDetector
 import org.springframework.core.convert.ConversionService
@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component
 import kotlin.reflect.full.callSuspend
 import kotlin.reflect.jvm.kotlinFunction
 
+@Primary
 @Component
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 class CoroutinesCommandExecutor(
