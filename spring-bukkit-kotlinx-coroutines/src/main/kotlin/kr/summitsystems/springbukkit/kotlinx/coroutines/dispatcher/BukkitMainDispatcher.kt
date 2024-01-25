@@ -1,12 +1,13 @@
 package kr.summitsystems.springbukkit.kotlinx.coroutines.dispatcher
 
 import kotlinx.coroutines.*
+import kr.summitsystems.springbukkit.core.scheduler.BukkitScheduledTask
+import kr.summitsystems.springbukkit.core.scheduler.DefaultBukkitScheduledTask
 import kr.summitsystems.springbukkit.kotlinx.coroutines.PluginCoroutineContextElement
 import org.bukkit.Bukkit
 import org.bukkit.Server
 import org.bukkit.plugin.IllegalPluginAccessException
 import org.bukkit.plugin.Plugin
-import org.bukkit.scheduler.BukkitRunnable
 import org.bukkit.scheduler.BukkitScheduler
 import kotlin.coroutines.CoroutineContext
 
@@ -15,48 +16,46 @@ open class BukkitMainDispatcher(
     private val server: Server = Bukkit.getServer(),
     private val scheduler: BukkitScheduler = Bukkit.getScheduler()
 ) : MainCoroutineDispatcher(), Delay {
-
     override val immediate: MainCoroutineDispatcher
-        get() = BukkitMainDispatcherImmediate(server, scheduler)
+        get() = object : BukkitMainDispatcher(server, scheduler) {
+            override val immediate: MainCoroutineDispatcher
+                get() = this
 
-    override fun dispatch(context: CoroutineContext, block: Runnable) {
+            override fun isDispatchNeeded(context: CoroutineContext): Boolean {
+                return !server.isPrimaryThread
+            }
+        }
+
+    open fun runTask(plugin: Plugin, task: () -> Unit): BukkitScheduledTask {
+        return DefaultBukkitScheduledTask(scheduler, scheduler.runTask(plugin, task))
+    }
+
+    open fun runTaskWithFixedDelay(plugin: Plugin, delay: Long, task: () -> Unit): BukkitScheduledTask {
+        return DefaultBukkitScheduledTask(scheduler, scheduler.runTaskLater(plugin, task, delay))
+    }
+
+    final override fun dispatch(context: CoroutineContext, block: Runnable) {
         try {
-            scheduler.runTask(getPluginByCoroutineContext(context), block)
+            runTask(getPluginByCoroutineContext(context)) { block.run() }
         } catch (_: IllegalPluginAccessException) {
         }
     }
 
-    override fun scheduleResumeAfterDelay(timeMillis: Long, continuation: CancellableContinuation<Unit>) {
-        val runnable = object : BukkitRunnable() {
-            override fun run() {
+    final override fun scheduleResumeAfterDelay(timeMillis: Long, continuation: CancellableContinuation<Unit>) {
+        val task = try {
+            runTaskWithFixedDelay(getPluginByCoroutineContext(continuation.context), timeMillis / 50) {
                 with(continuation) {
                     resumeUndispatched(Unit)
                 }
             }
-        }
-
-        val task = try {
-            runnable.runTaskLater(getPluginByCoroutineContext(continuation.context), timeMillis / 50)
         } catch (_: IllegalPluginAccessException) {
             null
         }
-        continuation.invokeOnCancellation { task?.cancel() }
+        continuation.invokeOnCancellation { task?.dispose() }
     }
 
     private fun getPluginByCoroutineContext(coroutineContext: CoroutineContext): Plugin {
         return coroutineContext[PluginCoroutineContextElement]?.plugin
             ?: throw IllegalStateException("PluginCoroutineContextElement is missing.")
-    }
-
-    private class BukkitMainDispatcherImmediate(
-        private val server: Server,
-        scheduler: BukkitScheduler
-    ) : BukkitMainDispatcher(server, scheduler), Delay {
-        override val immediate: MainCoroutineDispatcher
-            get() = this
-
-        override fun isDispatchNeeded(context: CoroutineContext): Boolean {
-            return !server.isPrimaryThread
-        }
     }
 }

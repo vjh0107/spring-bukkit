@@ -7,7 +7,6 @@ import org.bukkit.plugin.Plugin
 import org.bukkit.plugin.PluginDescriptionFile
 import org.bukkit.plugin.PluginManager
 import org.bukkit.plugin.ServicesManager
-import org.bukkit.scheduler.BukkitScheduler
 import org.springframework.beans.factory.config.BeanDefinition
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean
@@ -34,12 +33,6 @@ class BukkitConfiguration {
     @Bean
     fun bukkitServicesManager(server: Server): ServicesManager {
         return server.servicesManager
-    }
-
-    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    @Bean
-    fun bukkitScheduler(server: Server): BukkitScheduler {
-        return server.scheduler
     }
 
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)

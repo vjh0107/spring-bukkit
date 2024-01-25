@@ -1,12 +1,11 @@
 package kr.summitsystems.springbukkit.view
 
+import kr.summitsystems.springbukkit.core.scheduler.BukkitTaskScheduler
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.inventory.InventoryCloseEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.inventory.Inventory
-import org.bukkit.plugin.Plugin
-import org.bukkit.scheduler.BukkitScheduler
 import org.springframework.beans.factory.config.BeanDefinition
 import org.springframework.context.annotation.Role
 import org.springframework.stereotype.Component
@@ -16,8 +15,7 @@ import java.util.concurrent.ConcurrentHashMap
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 @Component
 class NavigatorImpl(
-    private val bukkitScheduler: BukkitScheduler,
-    private val plugin: Plugin,
+    private val bukkitTaskScheduler: BukkitTaskScheduler,
     private val viewFactory: ViewFactory
 ) : Navigator {
     private val views: ConcurrentHashMap<UUID, Stack<NamedView>> = ConcurrentHashMap()
@@ -117,20 +115,20 @@ class NavigatorImpl(
     }
 
     private fun closeInventory(viewer: Player) {
-        bukkitScheduler.runTask(plugin) { _ ->
+        bukkitTaskScheduler.schedule {
             viewer.closeInventory()
         }
     }
 
     private fun openInventory(viewer: Player, inventory: Inventory, delay: Long? = null) {
         if (delay == null) {
-            bukkitScheduler.runTask(plugin) { _ ->
+            bukkitTaskScheduler.schedule {
                 viewer.openInventory(inventory)
             }
         } else {
-            bukkitScheduler.runTaskLater(plugin, { _ ->
+            bukkitTaskScheduler.scheduleWithFixedDelay(delay) {
                 viewer.openInventory(inventory)
-            }, delay)
+            }
         }
     }
 

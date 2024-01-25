@@ -39,6 +39,7 @@ dependencyResolutionManagement {
 
             library("spigot", "org.spigotmc:spigot-api:${extra["spigot.version"]}")
             library("paper", "io.papermc.paper:paper-api:${extra["spigot.version"]}")
+            library("folia", "dev.folia:folia-api:${extra["spigot.version"]}")
             library("mockbukkit", "com.github.seeseemelk:MockBukkit-v1.20:${extra["mock.bukkit.version"]}")
             library("protocollib", "com.comphenix.protocol:ProtocolLib:${extra["protocollib.version"]}")
 
