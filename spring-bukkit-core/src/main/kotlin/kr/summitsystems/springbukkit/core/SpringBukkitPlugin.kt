@@ -58,6 +58,7 @@ abstract class SpringBukkitPlugin : JavaPlugin(), ApplicationContextInitializer<
         return SpringApplicationBuilder(DefaultResourceLoader(this.classLoader), applicationSource)
             .web(WebApplicationType.NONE)
             .bannerMode(Banner.Mode.OFF)
+            .logStartupInfo(false)
             .initializers(this)
             .run()
     }
