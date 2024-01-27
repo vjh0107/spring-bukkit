@@ -8,6 +8,7 @@ import org.bukkit.Bukkit
 import org.bukkit.Server
 import org.bukkit.plugin.IllegalPluginAccessException
 import org.bukkit.plugin.Plugin
+import org.bukkit.scheduler.BukkitRunnable
 import org.bukkit.scheduler.BukkitScheduler
 import kotlin.coroutines.CoroutineContext
 
@@ -27,11 +28,23 @@ open class BukkitMainDispatcher(
         }
 
     open fun runTask(plugin: Plugin, task: () -> Unit): BukkitScheduledTask {
-        return DefaultBukkitScheduledTask(scheduler, scheduler.runTask(plugin, task))
+        val bukkitRunnable = object : BukkitRunnable() {
+            override fun run() {
+                task.invoke()
+            }
+        }
+        bukkitRunnable.runTask(plugin)
+        return DefaultBukkitScheduledTask(scheduler, bukkitRunnable, plugin)
     }
 
     open fun runTaskWithFixedDelay(plugin: Plugin, delay: Long, task: () -> Unit): BukkitScheduledTask {
-        return DefaultBukkitScheduledTask(scheduler, scheduler.runTaskLater(plugin, task, delay))
+        val bukkitRunnable = object : BukkitRunnable() {
+            override fun run() {
+                task.invoke()
+            }
+        }
+        bukkitRunnable.runTaskLater(plugin, delay)
+        return DefaultBukkitScheduledTask(scheduler, bukkitRunnable, plugin)
     }
 
     final override fun dispatch(context: CoroutineContext, block: Runnable) {
