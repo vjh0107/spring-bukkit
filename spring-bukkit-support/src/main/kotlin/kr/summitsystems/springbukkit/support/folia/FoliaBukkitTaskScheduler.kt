@@ -9,10 +9,11 @@ import org.bukkit.plugin.Plugin
 import java.util.concurrent.TimeUnit
 
 class FoliaBukkitTaskScheduler(
-    private val plugin: Plugin
-) : BukkitTaskScheduler {
-    private val globalRegionScheduler: GlobalRegionScheduler = Bukkit.getGlobalRegionScheduler()
+    private val plugin: Plugin,
+    private val globalRegionScheduler: GlobalRegionScheduler = Bukkit.getGlobalRegionScheduler(),
     private val asyncScheduler: AsyncScheduler = Bukkit.getAsyncScheduler()
+) : BukkitTaskScheduler {
+
 
     override fun schedule(task: (BukkitScheduledTask) -> Unit): BukkitScheduledTask {
         val scheduledTask = globalRegionScheduler.run(plugin) {

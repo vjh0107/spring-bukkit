@@ -1,20 +1,25 @@
 package kr.summitsystems.springbukkit.core
 
+import org.bukkit.plugin.Plugin
 import org.bukkit.plugin.java.JavaPlugin
+import org.springframework.beans.factory.config.BeanDefinition
+import org.springframework.beans.factory.support.BeanDefinitionBuilder
+import org.springframework.beans.factory.support.BeanDefinitionRegistry
 import org.springframework.boot.Banner
 import org.springframework.boot.WebApplicationType
 import org.springframework.boot.builder.SpringApplicationBuilder
 import org.springframework.boot.env.YamlPropertySourceLoader
 import org.springframework.context.ApplicationContextInitializer
 import org.springframework.context.ConfigurableApplicationContext
+import org.springframework.context.support.GenericApplicationContext
 import org.springframework.core.annotation.AnnotationUtils
 import org.springframework.core.env.PropertiesPropertySource
-import org.springframework.core.io.DefaultResourceLoader
 import org.springframework.core.io.FileSystemResource
 import java.io.File
 import java.util.*
 
-abstract class SpringBukkitPlugin : JavaPlugin(), ApplicationContextInitializer<ConfigurableApplicationContext>, DisposableContainer, Disposable {
+abstract class SpringBukkitPlugin : JavaPlugin(), ApplicationContextInitializer<GenericApplicationContext>,
+    DisposableContainer, Disposable {
     private var applicationContext: ConfigurableApplicationContext? = null
     private val disposables: MutableList<Disposable> = mutableListOf()
 
@@ -55,7 +60,10 @@ abstract class SpringBukkitPlugin : JavaPlugin(), ApplicationContextInitializer<
 
     private fun runApplication(applicationSource: Class<*>): ConfigurableApplicationContext {
         Thread.currentThread().contextClassLoader = this.classLoader
-        return SpringApplicationBuilder(DefaultResourceLoader(this.classLoader), applicationSource)
+        return SpringApplicationBuilder(
+            SpringBukkitResourceLoader(this, this.classLoader, server.pluginManager),
+            applicationSource
+        )
             .web(WebApplicationType.NONE)
             .bannerMode(Banner.Mode.OFF)
             .logStartupInfo(false)
@@ -63,11 +71,12 @@ abstract class SpringBukkitPlugin : JavaPlugin(), ApplicationContextInitializer<
             .run()
     }
 
-    override fun initialize(applicationContext: ConfigurableApplicationContext) {
+    override fun initialize(applicationContext: GenericApplicationContext) {
         applicationContext.setClassLoader(this.classLoader)
         registerYamlPropertySource(applicationContext, "application.yml")
         registerYamlPropertySource(applicationContext, "config.yml")
         registerPropertiesPropertySource(applicationContext, "application.properties")
+        registerMetadataReaderFactory(applicationContext)
         registerPluginBean(applicationContext)
     }
 
@@ -92,7 +101,22 @@ abstract class SpringBukkitPlugin : JavaPlugin(), ApplicationContextInitializer<
         }
     }
 
-    private fun registerPluginBean(applicationContext: ConfigurableApplicationContext) {
-        applicationContext.beanFactory.registerSingleton("plugin", this)
+    private fun registerPluginBean(beanDefinitionRegistry: BeanDefinitionRegistry) {
+        val definition: BeanDefinition = BeanDefinitionBuilder
+            .rootBeanDefinition(
+                Plugin::class.java
+            ) { this }
+            .getBeanDefinition()
+        beanDefinitionRegistry.registerBeanDefinition(this::class.qualifiedName!!, definition)
+    }
+
+    private fun registerMetadataReaderFactory(beanDefinitionRegistry: BeanDefinitionRegistry) {
+        val beanName = "org.springframework.boot.autoconfigure.internalCachingMetadataReaderFactory"
+        val definition: BeanDefinition = BeanDefinitionBuilder
+            .rootBeanDefinition(
+                SpringBukkitMetadataReaderFactoryBean::class.java
+            ) { SpringBukkitMetadataReaderFactoryBean() }
+            .getBeanDefinition()
+        beanDefinitionRegistry.registerBeanDefinition(beanName, definition)
     }
 }
