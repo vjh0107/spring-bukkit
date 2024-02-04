@@ -11,8 +11,8 @@ import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
 import org.springframework.context.support.GenericApplicationContext
 
-abstract class View<C : ViewInitializationContext> : ViewLifecycle<C>, ViewItemLayoutContainer, DisposableContainer, InventoryHolder, ViewModelProvider, ApplicationContextAware, Navigator,
-    Disposable {
+abstract class View<C : ViewInitializationContext> : ViewLifecycle<C>, ViewItemLayoutContainer, DisposableContainer,
+    InventoryHolder, ViewModelProvider, ApplicationContextAware, Navigator, Disposable {
     private val viewModelStore: ViewModelStore = ViewModelStore()
     private val viewLayouts: MutableMap<Int, ViewItemLayout> = mutableMapOf()
     private var isStandby: Boolean = false
@@ -93,7 +93,7 @@ abstract class View<C : ViewInitializationContext> : ViewLifecycle<C>, ViewItemL
         return applicationContext
     }
 
-    override fun <VM : ViewModel> provideViewModel(viewModel: Class<VM>): VM {
+    final override fun <VM : ViewModel> provideViewModel(viewModel: Class<VM>): VM {
         val context = getApplicationContext() as GenericApplicationContext
         return context.beanFactory.createBean(viewModel).also { instantiatedViewModel ->
             viewModelStore.put(instantiatedViewModel)

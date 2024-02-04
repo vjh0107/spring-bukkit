@@ -41,8 +41,8 @@ abstract class PagingView<C : ChestViewInitializationContext> : ChestView<C>() {
         return getCurrentPageLayouts().findItemLayout(slot)
     }
 
-    override fun itemLayout(itemStack: ItemStack, slot: Int, vararg additionalSlots: Int): ViewItemLayout {
-        return getCurrentPageLayouts().itemLayout(itemStack, slot, *additionalSlots)
+    override fun itemLayout(itemStack: ItemStack, slots: Collection<Int>): ViewItemLayout {
+        return getCurrentPageLayouts().itemLayout(itemStack, slots)
     }
 
     fun hasNextPage(): Boolean {
