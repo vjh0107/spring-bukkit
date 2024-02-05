@@ -20,10 +20,10 @@ open class GenericCommandExecutor(
     protected val commandArgumentConversionService: ConversionService
 ) : CommandExecutor {
     override fun executeCommand(sender: CommandSender, commandName: String, args: Array<String>) {
-        val inputQualifier = "${commandName}.${args.joinToString(".")}"
+        val inputQualifier = "${commandName}.${args.joinToString(".")}."
         val allMappings = commandMappingRegistry.findAllByRoot(commandName)
         val commandMappings = allMappings.filter {
-            inputQualifier.startsWith(it.qualifier)
+            inputQualifier.startsWith(it.qualifier + ".")
         }
         val targetMapping = commandMappings.singleOrNull() ?: commandMappingRegistry.find(commandName)
         if (targetMapping == null) {
