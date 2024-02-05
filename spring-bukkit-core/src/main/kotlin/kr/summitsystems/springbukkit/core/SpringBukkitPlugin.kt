@@ -34,7 +34,7 @@ abstract class SpringBukkitPlugin : JavaPlugin(), ApplicationContextInitializer<
     final override fun onDisable() {
         disposables.forEach { it.dispose() }
 
-        applicationContext?.registerShutdownHook()
+        applicationContext?.close()
     }
 
     final override fun dispose() {
