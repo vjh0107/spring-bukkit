@@ -1,10 +1,9 @@
 dependencies {
     compileOnly(libs.spigot)
+    api(libs.reactor)
 
-    api(projects.serialization)
-
-    api(libs.kotlinx.serialization.json)
-    api(libs.kotlin.reflect)
+    api(projects.core)
+    compileOnly(projects.view)
 
     testImplementation(libs.paper)
     testImplementation(libs.spring.test)
@@ -12,5 +11,5 @@ dependencies {
 }
 
 projectGrapher {
-    group = "serialization"
+    group = "reactive"
 }

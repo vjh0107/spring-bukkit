@@ -3,8 +3,8 @@ package kr.summitsystems.springbukkit.jackson
 import be.seeseemelk.mockbukkit.MockBukkitExtension
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import kr.summitsystems.springbukkit.core.serializer.BukkitObjectSerializer
-import kr.summitsystems.springbukkit.core.serializer.DelegatedConfigurationSerializableRegistry
+import kr.summitsystems.springbukkit.serialization.BukkitObjectSerializer
+import kr.summitsystems.springbukkit.serialization.DelegatedConfigurationSerializableRegistry
 import kr.summitsystems.springbukkit.core.util.extension.item
 import kr.summitsystems.springbukkit.jackson.serializer.BukkitObjectJsonDeserializer
 import kr.summitsystems.springbukkit.jackson.serializer.BukkitObjectJsonSerializer

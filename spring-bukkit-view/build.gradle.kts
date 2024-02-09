@@ -6,3 +6,7 @@ dependencies {
     testImplementation(libs.spigot)
     testImplementation(libs.spring.test)
 }
+
+projectGrapher {
+    group = "mvc"
+}

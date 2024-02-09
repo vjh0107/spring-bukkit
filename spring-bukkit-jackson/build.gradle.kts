@@ -1,7 +1,7 @@
 dependencies {
     compileOnly(libs.spigot)
 
-    api(projects.core)
+    api(projects.serialization)
 
     api(libs.jackson.databind)
     api(libs.jackson.datatype.jdk8)
@@ -12,4 +12,8 @@ dependencies {
     testImplementation(libs.paper)
     testImplementation(libs.spring.test)
     testImplementation(libs.mockbukkit)
+}
+
+projectGrapher {
+    group = "serialization"
 }

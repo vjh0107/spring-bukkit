@@ -4,7 +4,7 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.plus
-import kr.summitsystems.springbukkit.core.serializer.ConfigurationSerializableRegistry
+import kr.summitsystems.springbukkit.serialization.ConfigurationSerializableRegistry
 import org.bukkit.configuration.serialization.ConfigurationSerializable
 import org.springframework.beans.factory.ObjectProvider
 import org.springframework.beans.factory.annotation.Value

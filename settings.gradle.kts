@@ -4,19 +4,40 @@ projects(
     "command",
     "core",
     "jackson",
+    "orm",
     "jpa",
+    "exposed",
+    "serialization",
     "kotlinx-coroutines",
     "kotlinx-serialization",
-    "starter",
     "support",
     "view",
-    "reactive"
+    "reactor"
 )
+
+projectsAll("starters")
 
 fun projects(vararg projects: String) {
     projects.forEach { project ->
         include(":spring-bukkit-$project")
         project(":spring-bukkit-$project").name = project
+    }
+}
+
+fun projectsAll(dirname: String) {
+    val directory = "spring-bukkit-$dirname"
+    file("${rootProject.projectDir.path}/${directory.replace(":", "/")}/").listFiles()?.filter { it.isDirectory }?.forEach { modulePath ->
+        val projectPath = ":${directory.replace("/", ":")}:${modulePath.name}"
+        include(projectPath)
+        project(projectPath).name = modulePath.name.removePrefix("spring-bukkit-")
+    }
+}
+
+pluginManagement {
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+        mavenLocal()
     }
 }
 
@@ -45,6 +66,11 @@ dependencyResolutionManagement {
             library("kotlin-reflect", "org.jetbrains.kotlin:kotlin-reflect:${extra["kotlin.version"]}")
             library("kotlinx-coroutines-core", "org.jetbrains.kotlinx:kotlinx-coroutines-core:${extra["kotlinx.coroutines.version"]}")
             library("kotlinx-serialization-json", "org.jetbrains.kotlinx:kotlinx-serialization-json:${extra["kotlinx.serialization.version"]}")
+
+            library("exposed-core", "org.jetbrains.exposed:exposed-core:${extra["exposed.version"]}")
+            library("exposed-dao", "org.jetbrains.exposed:exposed-dao:${extra["exposed.version"]}")
+            library("exposed-jdbc", "org.jetbrains.exposed:exposed-jdbc:${extra["exposed.version"]}")
+            library("exposed-java-time", "org.jetbrains.exposed:exposed-java-time:${extra["exposed.version"]}")
 
             library("spring-boot-autoconfigure", "org.springframework.boot:spring-boot-autoconfigure:${extra["spring.boot.version"]}")
             library("spring-aspects", "org.springframework:spring-aspects:${extra["spring.version"]}")

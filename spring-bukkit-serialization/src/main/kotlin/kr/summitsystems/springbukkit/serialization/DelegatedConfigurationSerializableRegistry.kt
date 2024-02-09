@@ -1,4 +1,4 @@
-package kr.summitsystems.springbukkit.core.serializer
+package kr.summitsystems.springbukkit.serialization
 
 import org.bukkit.configuration.serialization.ConfigurationSerializable
 import org.bukkit.configuration.serialization.ConfigurationSerialization

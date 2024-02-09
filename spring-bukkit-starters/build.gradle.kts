@@ -1,0 +1,3 @@
+projectGrapher {
+    isEnabled = false
+}

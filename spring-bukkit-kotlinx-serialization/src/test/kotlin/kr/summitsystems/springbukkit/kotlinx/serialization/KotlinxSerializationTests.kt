@@ -4,10 +4,9 @@ import be.seeseemelk.mockbukkit.MockBukkitExtension
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
-import kr.summitsystems.springbukkit.core.serializer.BukkitObjectSerializer
-import kr.summitsystems.springbukkit.core.serializer.DelegatedConfigurationSerializableRegistry
+import kr.summitsystems.springbukkit.serialization.BukkitObjectSerializer
+import kr.summitsystems.springbukkit.serialization.DelegatedConfigurationSerializableRegistry
 import kr.summitsystems.springbukkit.core.util.extension.item
-import kr.summitsystems.springbukkit.core.util.extension.print
 import kr.summitsystems.springbukkit.kotlinx.serialization.serializer.BukkitObjectKSerializer
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
@@ -18,7 +17,6 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.Mockito.mock
 import org.springframework.beans.factory.ObjectProvider
 import java.io.IOException
-import java.util.function.Consumer
 import java.util.stream.Stream
 
 @ExtendWith(MockBukkitExtension::class)

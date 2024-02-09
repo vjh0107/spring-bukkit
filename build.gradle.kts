@@ -2,7 +2,8 @@ plugins {
     alias(libs.plugins.kotlin.jvm) apply false
     alias(libs.plugins.kotlin.plugin.spring) apply false
     alias(libs.plugins.spring.boot) apply false
-    alias(libs.plugins.graph.generator)
+//    alias(libs.plugins.graph.generator)
+    id("kr.junhyung.project-grapher") version "0.0.1"
     `maven-publish`
     signing
 }
@@ -44,11 +45,13 @@ subprojects {
     }
 }
 
-dependencyGraphGenerator {
-    projectGenerators.configureEach {
-        projectNode = { node, _ ->
-            node.add(guru.nidi.graphviz.attribute.Style.SOLID, guru.nidi.graphviz.attribute.Color.rgb("#000000"))
-        }
+projectGrapher {
+
+//        color {
+//            guru.nidi.graphviz.attribute.Color.rgb("#000000")
+//        }
+    projectNode = { node, _ ->
+        node.add(guru.nidi.graphviz.attribute.Style.SOLID, guru.nidi.graphviz.attribute.Color.rgb("#000000"))
     }
 }
 
@@ -79,7 +82,7 @@ fun Project.setupPublication(project: Project) {
             create<MavenPublication>("mavenCentral") {
                 this.groupId = extra["project.group"]!!.toString()
                 this.version = extra["project.version"]!!.toString()
-                this.artifactId = "${project.rootProject.name}-${project.name.lowercase()}"
+                this.artifactId = project.projectDir.name.lowercase()
                 from(components["java"])
 
                 pom {
@@ -128,11 +131,12 @@ fun Project.setupPublication(project: Project) {
                         extra["signing.password"] = System.getenv("SIGNING_PASSPHRASE")
                     }
                     if (!extra.has("signing.secretKeyRingFile")) {
-                        extra["signing.secretKeyRingFile"] = if (System.getenv("SIGNING_SECRET_KEY_RING_FILE_ABSOLUTE") != null) {
-                            System.getenv("SIGNING_SECRET_KEY_RING_FILE_ABSOLUTE")
-                        } else {
-                            System.getenv("HOME") + "/" + System.getenv("SIGNING_SECRET_KEY_RING_FILE")
-                        }
+                        extra["signing.secretKeyRingFile"] =
+                            if (System.getenv("SIGNING_SECRET_KEY_RING_FILE_ABSOLUTE") != null) {
+                                System.getenv("SIGNING_SECRET_KEY_RING_FILE_ABSOLUTE")
+                            } else {
+                                System.getenv("HOME") + "/" + System.getenv("SIGNING_SECRET_KEY_RING_FILE")
+                            }
                     }
                     sign(this@publications)
                 }

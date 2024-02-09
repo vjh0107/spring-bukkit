@@ -1,13 +1,12 @@
 dependencies {
     compileOnly(libs.spigot)
-    api(libs.jakarta.annotation)
 
-    api(projects.core)
+    api(projects.orm)
 
     testImplementation(libs.spigot)
     testImplementation(libs.spring.test)
 }
 
 projectGrapher {
-    group = "mvc"
+    group = "orm"
 }

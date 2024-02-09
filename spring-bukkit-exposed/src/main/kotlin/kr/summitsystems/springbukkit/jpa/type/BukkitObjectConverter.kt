@@ -2,7 +2,7 @@ package kr.summitsystems.springbukkit.jpa.type
 
 import jakarta.persistence.AttributeConverter
 import jakarta.persistence.Converter
-import kr.summitsystems.springbukkit.serialization.BukkitObjectSerializer
+import kr.summitsystems.springbukkit.core.serializer.BukkitObjectSerializer
 import org.bukkit.configuration.serialization.ConfigurationSerializable
 
 @Converter

@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.JsonSerializer
 import com.fasterxml.jackson.databind.Module
 import com.fasterxml.jackson.databind.module.SimpleDeserializers
 import com.fasterxml.jackson.databind.module.SimpleSerializers
-import kr.summitsystems.springbukkit.core.serializer.ConfigurationSerializableRegistry
+import kr.summitsystems.springbukkit.serialization.ConfigurationSerializableRegistry
 import org.bukkit.configuration.serialization.ConfigurationSerializable
 import org.springframework.stereotype.Component
 
