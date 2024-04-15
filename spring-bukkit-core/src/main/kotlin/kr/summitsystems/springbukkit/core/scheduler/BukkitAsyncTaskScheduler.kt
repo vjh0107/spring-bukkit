@@ -1,3 +1,0 @@
-package kr.summitsystems.springbukkit.core.scheduler
-
-interface BukkitAsyncTaskScheduler : BukkitTaskScheduler

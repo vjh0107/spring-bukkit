@@ -1,0 +1,12 @@
+[versions]
+spring-boot = "3.2.4"
+bukkit = "1.20.4-R0.1-SNAPSHOT"
+
+[libraries]
+spring-boot-starter = { group = "org.springframework.boot", name = "spring-boot-starter", version.ref = "spring-boot" }
+spring-boot-starter-test = { group = "org.springframework.boot", name = "spring-boot-starter-test", version.ref = "spring-boot" }
+spigot = { group = "org.spigotmc", name = "spigot-api", version.ref = "bukkit" }
+folia = { group = "dev.folia", name = "folia-api", version.ref = "bukkit" }
+
+[plugins]
+#spring-boot = { id = org.springframework.boot", version.ref = "spring-boot" }
