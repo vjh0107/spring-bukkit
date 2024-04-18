@@ -1,5 +1,7 @@
 package kr.junhyung.springbukkit;
 
+import kr.junhyung.springbukkit.serializer.BukkitDeserializer;
+import kr.junhyung.springbukkit.serializer.BukkitSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -16,7 +18,7 @@ import org.springframework.context.annotation.Role;
 @ConditionalOnClass(Bukkit.class)
 @Role(BeanDefinition.ROLE_SUPPORT)
 @AutoConfiguration
-public class BukkitAutoConfiguration {
+public class SpringBukkitAutoConfiguration {
     @Role(BeanDefinition.ROLE_SUPPORT)
     @ConditionalOnMissingBean
     @Bean(destroyMethod = "")
@@ -50,5 +52,17 @@ public class BukkitAutoConfiguration {
     @Bean
     Plugin plugin() {
         throw new IllegalStateException();
+    }
+
+    @Role(BeanDefinition.ROLE_SUPPORT)
+    @Bean
+    BukkitSerializer bukkitSerializer() {
+        return new BukkitSerializer();
+    }
+
+    @Role(BeanDefinition.ROLE_SUPPORT)
+    @Bean
+    BukkitDeserializer bukkitDeserializer() {
+        return new BukkitDeserializer();
     }
 }

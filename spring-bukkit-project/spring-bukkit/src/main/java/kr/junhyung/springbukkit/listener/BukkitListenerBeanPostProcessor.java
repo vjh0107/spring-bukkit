@@ -1,10 +1,6 @@
 package kr.junhyung.springbukkit.listener;
 
-import org.bukkit.event.Event;
-import org.bukkit.event.EventException;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.plugin.EventExecutor;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.springframework.aop.framework.AopInfrastructureBean;
@@ -18,13 +14,27 @@ import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.lang.NonNull;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
-import java.util.*;
+import java.util.Set;
+import java.util.function.Supplier;
 
 public class BukkitListenerBeanPostProcessor implements BeanPostProcessor, ApplicationContextAware {
-    private ApplicationContext applicationContext;
+    private Supplier<BukkitListenerRegistrar> registrar;
+
+    public BukkitListenerBeanPostProcessor() {}
+
+    public void configure(Supplier<BukkitListenerRegistrar> registrar) {
+        this.registrar = registrar;
+    }
+
+    @Override
+    public void setApplicationContext(@NonNull  ApplicationContext applicationContext) throws BeansException {
+        this.registrar = () -> {
+            Plugin plugin = applicationContext.getBean(Plugin.class);
+            PluginManager pluginManager = applicationContext.getBean(PluginManager.class);
+            return new SimpleBukkitListenerRegistrar(plugin, pluginManager);
+        };
+    }
 
     @Override
     public Object postProcessAfterInitialization(@NonNull Object bean, @NonNull String beanName) throws BeansException {
@@ -36,51 +46,12 @@ public class BukkitListenerBeanPostProcessor implements BeanPostProcessor, Appli
         if (!AnnotationUtils.isCandidateClass(targetClass, EventHandler.class)) {
             return bean;
         }
-        Set<Method> annotatedMethods = MethodIntrospector
-            .selectMethods(targetClass, (Method method) -> AnnotatedElementUtils.isAnnotated(method, EventHandler.class));
+
+        Set<Method> annotatedMethods = MethodIntrospector.selectMethods(targetClass, (Method method) -> AnnotatedElementUtils.isAnnotated(method, EventHandler.class));
         if (annotatedMethods.isEmpty()) {
             return bean;
         }
-
-        Plugin plugin = applicationContext.getBean(Plugin.class);
-        PluginManager pluginManager = applicationContext.getBean(PluginManager.class);
-
-        for (Method method : annotatedMethods) {
-            List<Parameter> methodParameters = Arrays.stream(method.getParameters()).toList();
-            if (methodParameters.size() != 1) {
-                throw new IllegalStateException("A event handler can only have one event parameter.");
-            }
-            Parameter methodParameter = methodParameters.stream().findFirst().get();
-            System.out.println(methodParameter.getType().toString());
-
-            if (methodParameter.getType().isAssignableFrom(Event.class)) {
-                throw new IllegalStateException("first parameter of event handler must be event.");
-            }
-            @SuppressWarnings("unchecked")
-            Class<? extends Event> event = (Class<? extends Event>) methodParameter.getType();
-
-            EventHandler eventHandler = AnnotationUtils.getAnnotation(method, EventHandler.class);
-            Objects.requireNonNull(eventHandler);
-            EventExecutor eventExecutor = bakeEventExecutor(bean, event, method);
-            pluginManager.registerEvent(event, new Listener() {}, eventHandler.priority(), eventExecutor, plugin, eventHandler.ignoreCancelled());
-        }
+        registrar.get().registerEventHandler(bean);
         return bean;
-    }
-
-    private static EventExecutor bakeEventExecutor(Object listenerInstance, Class<? extends Event> eventClass, Method method) {
-        return (unused, event) -> {
-            try {
-                if (eventClass.isAssignableFrom(event.getClass())) {
-                    method.invoke(listenerInstance, event);
-                }
-            } catch (InvocationTargetException | IllegalAccessException exception) {
-                throw new EventException(exception.getCause());
-            }
-        };
-    }
-
-    @Override
-    public void setApplicationContext(@NonNull ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
     }
 }

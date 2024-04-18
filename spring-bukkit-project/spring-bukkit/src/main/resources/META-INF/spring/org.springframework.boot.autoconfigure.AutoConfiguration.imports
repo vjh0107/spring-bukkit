@@ -1,3 +1,2 @@
-kr.junhyung.springbukkit.BukkitAutoConfiguration
-kr.junhyung.springbukkit.listener.BukkitListenerConfiguration
-kr.junhyung.springbukkit.serializer.BukkitSerializerConfiguration
+kr.junhyung.springbukkit.SpringBukkitAutoConfiguration
+kr.junhyung.springbukkit.listener.BukkitListenerAutoConfiguration

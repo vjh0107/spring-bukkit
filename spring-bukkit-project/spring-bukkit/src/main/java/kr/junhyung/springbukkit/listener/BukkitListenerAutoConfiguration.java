@@ -6,10 +6,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Role;
 
 @AutoConfiguration
-public class BukkitListenerConfiguration {
-    @Role(BeanDefinition.ROLE_SUPPORT)
+@Role(BeanDefinition.ROLE_INFRASTRUCTURE)
+public class BukkitListenerAutoConfiguration {
     @Bean
-    static BukkitListenerBeanPostProcessor listenerBeanPostProcessor() {
+    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
+    public BukkitListenerBeanPostProcessor bukkitListenerAdvisor() {
         return new BukkitListenerBeanPostProcessor();
     }
 }

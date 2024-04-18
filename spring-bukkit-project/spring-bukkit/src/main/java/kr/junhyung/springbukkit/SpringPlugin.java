@@ -30,7 +30,7 @@ public abstract class SpringPlugin extends JavaPlugin implements ApplicationCont
 
     @Override
     public void onEnable() {
-        ResourceLoader resourceLoader = new BukkitResourceLoader(this, getServer().getPluginManager());
+        ResourceLoader resourceLoader = new SpringBukkitResourceLoader(this, getServer().getPluginManager());
         SpringApplicationBuilder builder = new SpringApplicationBuilder()
             .resourceLoader(resourceLoader)
             .sources(getApplicationClass())

@@ -12,10 +12,10 @@ import org.springframework.util.ReflectionUtils;
 import java.lang.reflect.Method;
 import java.util.*;
 
-class BukkitResourceLoader extends DefaultResourceLoader {
+class SpringBukkitResourceLoader extends DefaultResourceLoader {
     private final List<InternalResourceLoader> resourceLoaders = new ArrayList<>();
 
-    BukkitResourceLoader(JavaPlugin javaPlugin, PluginManager pluginManager) {
+    SpringBukkitResourceLoader(JavaPlugin javaPlugin, PluginManager pluginManager) {
         super(getClassLoader(javaPlugin));
 
         Set<String> dependPluginNames = new HashSet<>();
